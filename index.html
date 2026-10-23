@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="id"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0E0808">
+<title>G. Software Web</title>
+<link rel="stylesheet" href="style.css">
+
+
+<link rel="stylesheet" href="style.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=Karla:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+</head>
+<body>
+<canvas id="pbg" aria-hidden="true"></canvas>
+<div style="background: radial-gradient(1200px 720px at 50% 0, rgba(122,14,22,.30), transparent 70%), radial-gradient(900px 480px at 50% 100%, rgba(80,8,14,.22), transparent 70%), var(--bg); background-repeat: no-repeat; color: var(--fg); min-height: 100vh" data-canvas-width="1280" data-canvas-height="5600" data-document-role="page" data-label="Dark">
+
+  <!-- Skip link for accessibility -->
+  <a href="#main-content" class="skip-link">Lewati ke konten utama</a>
+
+  <!-- Navbar pill -->
+  <div class="navwrap">
+    <header class="pill">
+      <a class="logo" href="#top">G. Software Web</a>
+      <nav class="nav-desktop" aria-label="Navigasi utama">
+        <a class="navlink" href="#tentang">Tentang</a>
+        <a class="navlink" href="#karya">Karya</a>
+        <a class="navlink" href="#alur">Alur</a>
+        <a class="btn sm" href="#penawaran">Minta penawaran <span class="arr" aria-hidden="true">→</span></a>
+      </nav>
+      <button class="nav-hamburger" aria-expanded="false" aria-controls="mobile-drawer" aria-label="Buka menu navigasi" type="button">
+        <span class="hamburger-line" aria-hidden="true"></span>
+        <span class="hamburger-line" aria-hidden="true"></span>
+        <span class="hamburger-line" aria-hidden="true"></span>
+      </button>
+    </header>
+  </div>
+
+  <!-- Mobile navigation drawer -->
+  <div class="mobile-drawer" id="mobile-drawer" role="dialog" aria-modal="true" aria-label="Menu navigasi" hidden>
+    <div class="mobile-drawer-backdrop" aria-hidden="true"></div>
+    <nav class="mobile-drawer-content" aria-label="Navigasi mobile">
+      <div class="mobile-drawer-header">
+        <a class="logo" href="#top">G. Software Web</a>
+        <button class="mobile-drawer-close" aria-label="Tutup menu navigasi" type="button">
+          <span aria-hidden="true">✕</span>
+        </button>
+      </div>
+      <ul class="mobile-drawer-links">
+        <li><a class="mobile-drawer-link" href="#tentang">Tentang</a></li>
+        <li><a class="mobile-drawer-link" href="#karya">Karya</a></li>
+        <li><a class="mobile-drawer-link" href="#alur">Alur</a></li>
+        <li><a class="mobile-drawer-link btn sm" href="#penawaran">Minta penawaran <span class="arr" aria-hidden="true">→</span></a></li>
+      </ul>
+    </nav>
+  </div>
+
+  <!-- Hero -->
+  <section id="top main-content" class="hero wrap">
+    
+    <h1 class="ga" aria-label="G. Software Web"><span class="m" aria-hidden="true"><span class="l">G. Software</span></span><span class="m" aria-hidden="true"><span class="l acc">Web</span></span></h1>
+    <div class="herorow">
+      <div>
+        <p class="lede fade d2">Web dan software yang dibangun rapi, tanpa drama.</p>
+        
+      </div>
+      <div class="ctas fade d2">
+        <a class="btn" href="#penawaran">Minta penawaran <span class="arr" aria-hidden="true">→</span></a>
+        <a class="btn ghost" href="#karya">Lihat karya</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tentang: cara website dan sistem berjalan -->
+  <section id="tentang" class="wrap scr">
+    <div class="shead" data-reveal="">
+      <h2 class="stitle">Tentang: cara website ini berjalan.</h2>
+    </div>
+    <div id="sysflow" data-reveal="">
+      <div class="sys">
+        <button type="button" class="sysnode" aria-pressed="true" data-text="Seluruh situs dimuat sekali di browser. Berpindah bagian hanya menggulir, tanpa memuat ulang."><span class="dot"></span><span class="stepn">01</span><span class="steph">Halaman</span></button>
+        <button type="button" class="sysnode" aria-pressed="false" data-text="Klip karya tidak memakai gambar atau video. Semuanya digambar di browser lewat canvas dan bergerak mengikuti gulir."><span class="dot"></span><span class="stepn">02</span><span class="steph">Canvas</span></button>
+        <button type="button" class="sysnode" aria-pressed="false" data-text="Jenis proyek, detail tambahan, dan ringkasan yang kamu tulis diubah jadi gambaran awal rancangan secara langsung."><span class="dot"></span><span class="stepn">03</span><span class="steph">Permintaan</span></button>
+        <button type="button" class="sysnode" aria-pressed="false" data-text="Belum tersambung ke email atau WhatsApp. Akan diaktifkan setelah desain final."><span class="dot"></span><span class="stepn">04</span><span class="steph">Kirim</span></button>
+      </div>
+      <p class="sysdesc" id="sysdesc" aria-live="polite">Seluruh situs dimuat sekali di browser. Berpindah bagian hanya menggulir, tanpa memuat ulang.</p>
+    </div>
+  </section>
+
+  <!-- Karya: pinned horizontal scroll -->
+  <section id="karya" class="pin" data-pin="">
+    <div class="pinview" data-pin-view="">
+      <div class="pininner" data-pin-inner="">
+        <div class="intro">
+          
+          <h2 class="stitle">Sembilan karya dan gerakan yang sudah dibuat.</h2>
+          <a class="btn ghost sm skipbtn" href="#penawaran">Lewati ke penawaran <span class="arr" aria-hidden="true">→</span></a>
+          
+        </div>
+        <article class="clip" data-clip="">
+          <canvas class="clipcv" data-scene="pool" role="img" aria-label="Meja biliar dilihat dari atas, tongkat memukul bola putih ke susunan bola"></canvas>
+          <div class="cliphead"><h3 class="cliptitle">Billiard Hub</h3></div>
+        </article>
+        <article class="clip" data-clip="">
+          <canvas class="clipcv" data-scene="food" role="img" aria-label="Kue leker dituang di loyang bundar, diberi cokelat dan keju, lalu dilipat setengah lingkaran"></canvas>
+          <div class="cliphead"><h3 class="cliptitle">Leckers Turi</h3></div>
+        </article>
+        <article class="clip" data-clip="">
+          <canvas class="clipcv" data-scene="mono" role="img" aria-label="Aplikasi web laundry: mesin cuci berputar di jendela browser dengan status jemput, cuci, setrika, antar"></canvas>
+          <div class="cliphead"><h3 class="cliptitle">Miftyahlaun</h3></div>
+        </article>
+        <article class="clip" data-clip="">
+          <canvas class="clipcv" data-scene="chair" role="img" aria-label="Katalog web mebel Jepara: kursi, meja, dan lemari ukir digambar satu per satu di jendela browser"></canvas>
+          <div class="cliphead"><h3 class="cliptitle">Jepara Mebelku</h3></div>
+        </article>
+        <article class="clip" data-clip="">
+          <canvas class="clipcv" data-scene="wood" role="img" aria-label="Garis gelombang serat kayu yang dibelokkan satu titik pusat seperti mata kayu"></canvas>
+          <div class="cliphead"><h3 class="cliptitle">Serat Kayu</h3></div>
+        </article>
+        <article class="clip" data-clip="">
+          <canvas class="clipcv" data-scene="island" role="img" aria-label="Pulau low-poly dari segitiga dengan langit gradasi dan gelombang sinus"></canvas>
+          <div class="cliphead"><h3 class="cliptitle">Pulau Senja</h3></div>
+        </article>
+        <article class="clip" data-clip="">
+          <canvas class="clipcv" data-scene="mining" role="img" aria-label="Lapisan tanah parallax dengan titik ore yang bergerak berbeda kecepatan"></canvas>
+          <div class="cliphead"><h3 class="cliptitle">Mining Depths</h3></div>
+        </article>
+        <article class="clip" data-clip="">
+          <canvas class="clipcv" data-scene="wave" role="img" aria-label="Grid titik yang membentuk gelombang dari fungsi sinus"></canvas>
+          <div class="cliphead"><h3 class="cliptitle">Portofolks</h3></div>
+        </article>
+        <article class="clip" data-clip="">
+          <canvas class="clipcv" data-scene="car" role="img" aria-label="Mobil wireframe 3D yang berputar dengan proyeksi perspektif"></canvas>
+          <div class="cliphead"><h3 class="cliptitle">Portofolio 3D Mobil</h3></div>
+        </article>
+      </div>
+      <div class="pinfoot">
+        <span class="mono" data-pin-count="" hidden>01 / 09</span>
+        <div class="pinbar"><i data-pin-bar=""></i></div>
+        
+      </div>
+    </div>
+  </section>
+
+  <!-- Alur proyek -->
+  <section id="alur" class="wrap scr">
+    <div class="shead" data-reveal="">
+      
+      <h2 class="stitle">Alurnya pendek dan bisa kamu pantau.</h2>
+    </div>
+    <div class="rail" data-rail="">
+      <div class="railline"></div><div class="railfill"></div>
+      <div class="step" data-step=""><span class="dot"></span><span class="stepn">01</span><h3 class="steph">Brief</h3></div>
+      <div class="step" data-step=""><span class="dot"></span><span class="stepn">02</span><h3 class="steph">Penawaran</h3></div>
+      <div class="step" data-step=""><span class="dot"></span><span class="stepn">03</span><h3 class="steph">Bangun</h3></div>
+      <div class="step" data-step=""><span class="dot"></span><span class="stepn">04</span><h3 class="steph">Rilis</h3></div>
+    </div>
+  </section>
+
+  <!-- Penawaran: kanvas perancang -->
+  <section id="penawaran" class="wrap scr scr-last">
+    <div class="shead" data-reveal="">
+      
+      <h2 class="dtitle">Rancang dulu, hitung kemudian.</h2>
+      
+    </div>
+
+    <div class="bgrid" data-reveal="" data-tab="atur">
+      <div class="btabs" role="tablist"><button type="button" role="tab" class="btab" data-b-tab="atur" aria-selected="true">Atur</button><button type="button" role="tab" class="btab" data-b-tab="lihat" aria-selected="false">Pratinjau</button></div>
+      <form class="bctl" onsubmit="return false">
+        <fieldset class="grp">
+          <legend class="glabel">Jenis proyek</legend>
+          <div class="chips" id="bld-types"></div>
+        </fieldset>
+        <div class="grp">
+          <div class="glrow"><label class="glabel" for="ringkasan">Ringkasan kebutuhan</label><button type="button" class="btn ghost sm" data-b-idea="">Ide lain</button></div>
+          <textarea class="field" id="ringkasan" rows="3" placeholder="Contoh: portofolio fotografer, 5 halaman, ada galeri dan form kontak, tampilan gelap."></textarea>
+        </div>
+        <fieldset class="grp">
+          <legend class="glabel">Detail tambahan</legend>
+          <div class="chips" id="bld-feats"></div>
+        </fieldset>
+      </form>
+      <div class="bstage">
+        <div class="bwrap">
+          <canvas class="bcv" id="bld-canvas" data-scene="builder" role="img" aria-label="Kanvas pratinjau rancangan website sesuai pilihan dan ringkasan kebutuhan"></canvas>
+          
+        </div>
+        <div class="grp">
+          <label class="glabel" for="kontak">Kontak untuk balasan</label>
+          <div class="sendrow">
+          <input class="field" id="kontak" type="text" placeholder="Email atau WhatsApp">
+          <button type="button" class="btn" data-b-send="">Kirim <span class="arr" aria-hidden="true">→</span></button>
+        </div>
+        </div>
+        <span class="status" id="bld-status" aria-live="polite"></span>
+      </div>
+    </div>
+  </section>
+
+  <footer class="wrap">
+    <div class="foot">
+      <span>© 2026 G. Software Web</span>
+      
+    </div>
+  </footer>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/canvasparticles-js@4.5.6/dist/index.umd.js"></script>
+<script src="config.js"></script>
+<script src="navigation.js"></script>
+
+
+
+
+  <script src="script.js"></script>
+</body></html>
