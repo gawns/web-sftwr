@@ -1,4 +1,460 @@
+/**
+ * Configuration for G. Software Web
+ * All configurable values in one place for easy maintenance
+ */
 
+// ============================================================================
+// FORM / LEAD CAPTURE CONFIGURATION
+// ============================================================================
+// sendEndpoint: Your server endpoint that receives POST JSON {contact, type, features, summary, text, sentAt}
+//               and forwards to WhatsApp/email/CRM using server-side API key (never put API key in browser!)
+// waNumber:     Fallback WhatsApp number in international format without + (e.g., "6281234567890")
+//               Used when sendEndpoint is empty: opens WhatsApp with pre-filled message
+//               If both empty, copies message to clipboard
+window.GSW_CONFIG = {
+  sendEndpoint: '',  // kosong: pesan dikirim lewat WhatsApp (wa.me)
+  waNumber: '6283114241995'  // 083114241995
+};
+
+// ============================================================================
+// TEXT STRINGS (Indonesian - can be extended for i18n)
+// ============================================================================
+window.GSW_TEXT = {
+  // Navigation & UI
+  skipLink: 'Lewati ke konten utama',
+  navAriaLabel: 'Navigasi utama',
+  mobileMenuOpen: 'Buka menu navigasi',
+  mobileMenuClose: 'Tutup menu navigasi',
+
+  // Hero
+  heroTagline: 'Web dan software yang dibangun rapi, tanpa drama.',
+  ctaPrimary: 'Minta penawaran',
+  ctaSecondary: 'Lihat karya',
+
+  // About / How it works
+  aboutTitle: 'Tentang: cara website ini berjalan.',
+  sysFlowSteps: [
+    {
+      label: 'Halaman',
+      text: 'Seluruh situs dimuat sekali di browser. Berpindah bagian hanya menggulir, tanpa memuat ulang.'
+    },
+    {
+      label: 'Canvas',
+      text: 'Klip karya tidak memakai gambar atau video. Semuanya digambar di browser lewat canvas dan bergerak mengikuti gulir.'
+    },
+    {
+      label: 'Permintaan',
+      text: 'Jenis proyek, detail tambahan, dan ringkasan yang kamu tulis diubah jadi gambaran awal rancangan secara langsung.'
+    },
+    {
+      label: 'Kirim',
+      text: 'Belum tersambung ke email atau WhatsApp. Akan diaktifkan setelah desain final.'
+    }
+  ],
+
+  // Showcase
+  showcaseTitle: 'Sembilan karya dan gerakan yang sudah dibuat.',
+  skipShowcase: 'Lewati ke penawaran',
+
+  // Process
+  processTitle: 'Alurnya pendek dan bisa kamu pantau.',
+  processSteps: [
+    { num: '01', title: 'Brief' },
+    { num: '02', title: 'Penawaran' },
+    { num: '03', title: 'Bangun' },
+    { num: '04', title: 'Rilis' }
+  ],
+
+  // Quote Builder
+  builderTitle: 'Rancang dulu, hitung kemudian.',
+  builderTabs: { configure: 'Atur', preview: 'Pratinjau' },
+  projectTypes: {
+    portofolio: 'Portofolio',
+    landing: 'Landing page',
+    company: 'Company profile',
+    toko: 'Toko online',
+    blog: 'Blog / berita',
+    booking: 'Booking',
+    undangan: 'Undangan digital',
+    dashboard: 'Dashboard / sistem'
+  },
+  features: {
+    form: 'Form kontak',
+    pay: 'Pembayaran',
+    login: 'Login pengguna',
+    search: 'Pencarian',
+    lang: 'Dua bahasa',
+    chat: 'Chat WhatsApp',
+    gallery: 'Galeri',
+    testi: 'Testimoni',
+    faq: 'FAQ',
+    price: 'Harga / paket',
+    map: 'Peta lokasi',
+    news: 'Newsletter',
+    blog: 'Blog',
+    dark: 'Mode gelap',
+    anim: 'Animasi'
+  },
+  featureKeywords: {
+    form: /kontak|form|hubungi|pesan/,
+    pay: /bayar|pembayaran|checkout|keranjang|transaksi/,
+    login: /login|akun|member|masuk|daftar/,
+    search: /cari|pencarian|search/,
+    lang: /bahasa|inggris|english/,
+    chat: /whatsapp|chat|\bwa\b/,
+    gallery: /galeri|gallery|foto/,
+    testi: /testimoni|ulasan|review/,
+    faq: /faq|tanya jawab/,
+    price: /harga|paket|pricing/,
+    map: /peta|lokasi|maps/,
+    news: /newsletter|langganan/,
+    blog: /blog|artikel|berita/,
+    dark: /gelap|dark/,
+    anim: /animasi|interaktif|smooth|efek|motion/
+  },
+  projectKeywords: [
+    ['toko', /toko|jual|produk|katalog|belanja|e-?commerce/],
+    ['booking', /booking|reservasi|jadwal|appointment|salon|klinik|sewa/],
+    ['undangan', /undangan|nikah|pernikahan|wedding|ulang tahun/],
+    ['dashboard', /dashboard|admin|sistem|laporan|monitor|aplikasi/],
+    ['blog', /blog|berita|artikel|majalah/],
+    ['company', /company|perusahaan|profil usaha|profile|kantor/],
+    ['portofolio', /portofolio|portfolio|porto\b|\bcv\b|karya|fotografer|desainer/],
+    ['landing', /landing|promosi|jasa|bisnis|kampanye/]
+  ],
+  basePages: { portofolio: 4, landing: 1, company: 5, toko: 6, blog: 5, booking: 4, undangan: 1, dashboard: 5 },
+  bodyNames: {
+    portofolio: ['grid proyek', 'tentang'],
+    landing: ['kartu layanan', 'statistik'],
+    company: ['tentang', 'kartu layanan', 'tim'],
+    booking: ['kalender', 'kartu layanan'],
+    undangan: ['hitung mundur', 'kartu acara']
+  },
+  summaryLabel: 'Ringkasan kebutuhan',
+  summaryPlaceholder: 'Contoh: portofolio fotografer, 5 halaman, ada galeri dan form kontak, tampilan gelap.',
+  ideaButton: 'Ide lain',
+  contactLabel: 'Kontak untuk balasan',
+  contactPlaceholder: 'Email atau WhatsApp',
+  sendButton: 'Kirim',
+
+  // Send Flow
+  sendStatusSending: 'Menyiapkan pesan WhatsApp',
+  sendStatusReceived: 'Menerima Ide',
+  sendStatusDelivering: 'Membuka WhatsApp',
+  sendResult: {
+    ok: 'Terkirim, Terima Kasih',
+    wa: 'Pesan sudah siap di WhatsApp. Tekan kirim di sana.',
+    copied: 'Belum tersambung. Ringkasan disalin.',
+    nocfg: 'Belum tersambung ke penerima.',
+    fail: 'Belum terkirim. Coba lagi sebentar.'
+  },
+  sendErrorConnection: 'Belum terkirim. Periksa koneksi lalu coba lagi.',
+  sendErrorNoConfig: 'Pengiriman belum tersambung ke penerima.',
+  statusRequiredContact: 'Isi email atau WhatsApp dulu.',
+  validationError: 'Masukkan email atau nomor WhatsApp yang valid (contoh: 081234567890 atau email@domain.com).',
+
+  // Footer
+  copyright: '© 2026 G. Software Web'
+};
+
+// ============================================================================
+// CANVAS SCENE CONFIGURATION
+// ============================================================================
+window.GSW_SCENES = {
+  // Scene IDs match data-scene attributes in HTML
+  // Each scene can have custom parameters here
+  pool: { name: 'Billiard Hub' },
+  food: { name: 'Leckers Turi' },
+  mono: { name: 'Miftyahlaun' },
+  chair: { name: 'Jepara Mebelku' },
+  wood: { name: 'Serat Kayu' },
+  island: { name: 'Pulau Senja' },
+  mining: { name: 'Mining Depths' },
+  wave: { name: 'Portofolks' },
+  car: { name: 'Portofolio 3D Mobil' },
+  builder: { name: 'Preview Builder' }
+};
+
+// ============================================================================
+// PROJECT PORTFOLIO DATA
+// ============================================================================
+window.GSW_PROJECTS = [
+  {
+    id: 'billiard-hub',
+    title: 'Billiard Hub',
+    scene: 'pool',
+    description: 'Real-time multiplayer billiards with physics engine',
+    tech: ['Canvas', 'WebSocket', 'Node.js'],
+    demoUrl: 'https://billiard.example.com',
+    thumbnail: null // Generated from canvas scene
+  },
+  {
+    id: 'leckers-turi',
+    title: 'Leckers Turi',
+    scene: 'food',
+    description: 'E-commerce for traditional Indonesian snacks with custom animations',
+    tech: ['Next.js', 'Canvas', 'Tailwind'],
+    demoUrl: 'https://leckers.example.com',
+    thumbnail: null
+  },
+  {
+    id: 'miftyahlaun',
+    title: 'Miftyahlaun',
+    scene: 'mono',
+    description: 'Laundry service web app with real-time tracking',
+    tech: ['React', 'Firebase', 'PWA'],
+    demoUrl: 'https://miftyahlaun.example.com',
+    thumbnail: null
+  },
+  {
+    id: 'jepara-mebelku',
+    title: 'Jepara Mebelku',
+    scene: 'chair',
+    description: 'Jepara furniture catalog with interactive 3D viewer',
+    tech: ['Three.js', 'Next.js', 'GSAP'],
+    demoUrl: 'https://jepara.example.com',
+    thumbnail: null
+  },
+  {
+    id: 'serat-kayu',
+    title: 'Serat Kayu',
+    scene: 'wood',
+    description: 'Wood grain pattern generator for designers',
+    tech: ['Canvas', 'WebGL', 'Vite'],
+    demoUrl: 'https://seratkayu.example.com',
+    thumbnail: null
+  },
+  {
+    id: 'pulau-senja',
+    title: 'Pulau Senja',
+    scene: 'island',
+    description: 'Low-poly island generator with procedural terrain',
+    tech: ['Canvas', 'Perlin Noise', 'Vanilla JS'],
+    demoUrl: 'https://pulau.example.com',
+    thumbnail: null
+  },
+  {
+    id: 'mining-depths',
+    title: 'Mining Depths',
+    scene: 'mining',
+    description: 'Parallax mining visualization with ore simulation',
+    tech: ['Canvas', 'Parallax', 'Web Workers'],
+    demoUrl: 'https://mining.example.com',
+    thumbnail: null
+  },
+  {
+    id: 'portofolks',
+    title: 'Portofolks',
+    scene: 'wave',
+    description: 'Interactive point-cloud wave visualization',
+    tech: ['Canvas', 'Math.sin', 'RequestAnimationFrame'],
+    demoUrl: 'https://portofolks.example.com',
+    thumbnail: null
+  },
+  {
+    id: 'portfolio-3d-mobil',
+    title: 'Portofolio 3D Mobil',
+    scene: 'car',
+    description: 'Wireframe 3D car with perspective projection',
+    tech: ['Canvas', '3D Math', 'Vanilla JS'],
+    demoUrl: 'https://car3d.example.com',
+    thumbnail: null
+  }
+];
+
+// ============================================================================
+// TESTIMONIALS & DEVELOPER PROFILE
+// ============================================================================
+window.GSW_TESTIMONIALS = [
+  { quote: "Prosesnya cepat, komunikasi jelas, hasilnya melebihi ekspektasi.", author: "Bpk. Andi", role: "Founder, Leckers Turi", avatar: null },
+  { quote: "Canvas animasinya smooth banget, user engagement naik signifikan.", author: "Ibu Sari", role: "Marketing Lead, Jepara Mebelku", avatar: null },
+  { quote: "Dari brief ke deploy cuma 3 minggu. Recommended untuk yang butuh cepat & rapi.", author: "Bpk. Rudi", role: "Owner, Miftyahlaun", avatar: null }
+];
+
+window.GSW_PROFILE = {
+  github: 'https://github.com/ghaiyyazatha',
+  linkedin: 'https://linkedin.com/in/ghaiyyazatha',
+  tiktok: 'https://www.tiktok.com/@softwarehouse_bsdg'
+};
+
+// ============================================================================
+// ANIMATION & PERFORMANCE SETTINGS
+// ============================================================================
+window.GSW_SETTINGS = {
+  // Reduced motion respect
+  respectReducedMotion: true,
+
+  // Canvas rendering
+  maxDevicePixelRatio: 2,
+  canvasParticleCount: { mobile: 28, desktop: 45 },
+
+  // Scroll animations
+  revealRootMargin: '120px',
+  revealThreshold: 0.12,
+  railThreshold: 0.12,
+
+  // Horizontal scroll (pinned showcase)
+  pinProgressBarHeight: 1,
+
+  // Quote builder preview
+  previewTransitionDuration: 350,
+  previewThumbAlpha: 0.6,
+  previewMainAlpha: 1.0,
+  previewHoverAlpha: 1.0,
+
+  // Send flow animation
+  sendOverlayAnimationDuration: 900,
+  sendOverlayExitDuration: 1000,
+  sendStepDurations: [1000, 3200, 1000],
+
+  // Auto-rotate about section (ms)
+  aboutAutoRotateInterval: 3600,
+
+  // Background particles (CanvasParticles)
+  particles: {
+    color: '#2F7BFF',
+    connectDistance: 150,
+    relSpeed: 0.45,
+    relSize: 1.1,
+    maxWork: 20,
+    mobile: 20,
+    desktop: 30
+  }
+};
+
+// ============================================================================
+// VALIDATION RULES
+// ============================================================================
+window.GSW_VALIDATION = {
+  // Contact field: accept email or Indonesian phone number
+  contactPatterns: {
+    email: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+    phone: /^(\+62|62|0)8[1-9][0-9]{7,10}$/  // Indonesian mobile
+  },
+  contactErrorMessage: 'Masukkan email atau nomor WhatsApp yang valid (contoh: 081234567890 atau email@domain.com)'
+};
+
+// ============================================================================
+// HELPER FUNCTIONS
+// ============================================================================
+window.GSW_UTILS = {
+  /**
+   * Validate contact input (email or Indonesian phone)
+   * @param {string} value
+   * @returns {boolean}
+   */
+  validateContact: function (value) {
+    var v = (value || '').trim();
+    if (!v) return false;
+    return GSW_VALIDATION.contactPatterns.email.test(v) ||
+           GSW_VALIDATION.contactPatterns.phone.test(v);
+  },
+
+  /**
+   * Format phone number to international format (62xxxx)
+   * @param {string} phone
+   * @returns {string}
+   */
+  formatPhone: function (phone) {
+    return String(phone || '').replace(/\D/g, '').replace(/^0/, '62').replace(/^\+62/, '62');
+  },
+
+  /**
+   * Get project type from summary text
+   * @param {string} text
+   * @returns {string|null}
+   */
+  detectProjectType: function (text) {
+    var s = (text || '').toLowerCase();
+    for (var i = 0; i < GSW_TEXT.projectKeywords.length; i++) {
+      if (GSW_TEXT.projectKeywords[i][1].test(s)) return GSW_TEXT.projectKeywords[i][0];
+    }
+    return null;
+  },
+
+  /**
+   * Detect features from summary text
+   * @param {string} text
+   * @returns {Object}
+   */
+  detectFeatures: function (text) {
+    var s = (text || '').toLowerCase();
+    var f = {};
+    for (var k in GSW_TEXT.featureKeywords) {
+      f[k] = GSW_TEXT.featureKeywords[k].test(s);
+    }
+    return f;
+  }
+};
+
+/* ---------- bagian 2 ---------- */
+/**
+ * Mobile Navigation - full-screen overlay (tombol tutup sendiri, fokus terkunci, Escape, backdrop)
+ */
+(function () {
+  'use strict';
+  var overlay = document.getElementById('mobile-overlay');
+  var hamburger = document.querySelector('.nav-hamburger');
+  if (!overlay || !hamburger) return;
+  var closeBtn = overlay.querySelector('.mo-close');
+  var T = window.GSW_TEXT || {};
+  var body = document.body, lastFocused = null, isOpen = false, timer = null;
+
+  function openOverlay() {
+    lastFocused = document.activeElement;
+    isOpen = true;
+    clearTimeout(timer);
+    overlay.hidden = false;
+    overlay.offsetHeight; // reflow agar transisi jalan
+    overlay.classList.add('is-open');
+    hamburger.setAttribute('aria-expanded', 'true');
+    hamburger.setAttribute('aria-label', T.mobileMenuClose || 'Tutup menu navigasi');
+    body.style.overflow = 'hidden';
+    document.addEventListener('keydown', onKey);
+    setTimeout(function () { if (closeBtn) closeBtn.focus(); }, 120);
+  }
+
+  function closeOverlay(restoreFocus) {
+    if (!isOpen) return;
+    isOpen = false;
+    overlay.classList.remove('is-open');
+    hamburger.setAttribute('aria-expanded', 'false');
+    hamburger.setAttribute('aria-label', T.mobileMenuOpen || 'Buka menu navigasi');
+    body.style.overflow = '';
+    document.removeEventListener('keydown', onKey);
+    timer = setTimeout(function () { if (!isOpen) overlay.hidden = true; }, 420);
+    if (restoreFocus !== false && lastFocused && lastFocused.focus) lastFocused.focus();
+  }
+
+  function onKey(e) {
+    if (e.key === 'Escape') { closeOverlay(); return; }
+    if (e.key !== 'Tab') return;
+    var f = overlay.querySelectorAll('a[href], button'), first = f[0], last = f[f.length - 1];
+    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+  }
+
+  function goToOffer() {
+    var s = document.getElementById('penawaran'), c = document.getElementById('kontak');
+    if (s) s.scrollIntoView({ behavior: 'smooth' });
+    setTimeout(function () { if (c) c.focus({ preventScroll: true }); }, 700);
+  }
+
+  hamburger.addEventListener('click', function () { isOpen ? closeOverlay() : openOverlay(); });
+  if (closeBtn) closeBtn.addEventListener('click', function () { closeOverlay(); });
+  overlay.querySelector('.mobile-overlay-backdrop').addEventListener('click', function () { closeOverlay(); });
+
+  overlay.addEventListener('click', function (e) {
+    var a = e.target.closest ? e.target.closest('a[href]') : null;
+    if (!a || !overlay.contains(a)) return;
+    if (a.hasAttribute('data-send-trigger')) { e.preventDefault(); closeOverlay(false); goToOffer(); return; }
+    if (a.getAttribute('href').charAt(0) === '#') closeOverlay(false); // scroll-lock dilepas sebelum lompat ke anchor
+  });
+
+  window.addEventListener('resize', function () { if (window.innerWidth > 640 && isOpen) closeOverlay(false); });
+})();
+
+/* ---------- bagian 3 ---------- */
 /* Scenes, pinned horizontal scroll, process rail, request builder. No dependencies. */
 (function () {
   if (window.__ga) return;
@@ -457,92 +913,20 @@
     }
   }
 
-  // Keyboard navigation and drag scroll for horizontal showcase (P1-3)
+  // Keyboard: panah kiri/kanan menggeser karya lewat gulir halaman (satu sumber gerak, tanpa tabrakan)
   (function () {
     var tr = document.querySelector('[data-pin]');
     if (!tr) return;
-    var vw = tr.querySelector('[data-pin-view]');
-    if (!vw) return;
-
-    // Keyboard navigation
     document.addEventListener('keydown', function (e) {
-      var pinSection = document.querySelector('[data-pin]');
-      if (!pinSection) return;
-      var pinRect = pinSection.getBoundingClientRect();
-      var vh = window.innerHeight;
-      // Only activate when pin section is in viewport
-      if (pinRect.bottom < 0 || pinRect.top > vh) return;
-
-      if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
-        e.preventDefault();
-        var clips = vw.querySelectorAll('[data-clip]');
-        if (!clips.length) return;
-        var clipWidth = clips[0].offsetWidth + 32; // clip width + gap
-        var scrollAmount = e.key === 'ArrowLeft' ? -clipWidth : clipWidth;
-        // Smooth scroll by animating the transform
-        var currentTransform = vw.querySelector('[data-pin-inner]').style.transform;
-        var match = currentTransform.match(/translate3d\(([-\d.]+)px/);
-        var currentX = match ? parseFloat(match[1]) : 0;
-        var newX = currentX + scrollAmount;
-        var maxX = -(vw.querySelector('[data-pin-inner]').scrollWidth - vw.clientWidth);
-        newX = Math.max(maxX, Math.min(0, newX));
-        vw.querySelector('[data-pin-inner]').style.transform = 'translate3d(' + newX + 'px,0,0)';
-        // Update pcur for consistency
-        var dist = Math.max(0, vw.querySelector('[data-pin-inner]').scrollWidth - vw.clientWidth);
-        pcur = dist > 0 ? -newX / dist : 0;
-      }
+      if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
+      var t = e.target;
+      if (t && /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName)) return;
+      var r = tr.getBoundingClientRect(), n = tr.querySelectorAll('[data-clip]').length;
+      if (!n || r.bottom < 0 || r.top > window.innerHeight) return;
+      e.preventDefault();
+      var step = Math.max(1, (tr.offsetHeight - window.innerHeight) / n);
+      window.scrollBy({ top: e.key === 'ArrowRight' ? step : -step, behavior: reduce ? 'auto' : 'smooth' });
     });
-
-    // Touch/mouse drag scroll
-    var isDragging = false, startX = 0, startTransformX = 0;
-    var inner = vw.querySelector('[data-pin-inner]');
-
-    function getClientX(e) {
-      return e.type.startsWith('touch') ? e.touches[0].clientX : e.clientX;
-    }
-
-    vw.addEventListener('pointerdown', function (e) {
-      if (e.button !== 0 && e.type !== 'touchstart') return;
-      isDragging = true;
-      startX = getClientX(e);
-      var transform = inner.style.transform;
-      var match = transform.match(/translate3d\(([-\d.]+)px/);
-      startTransformX = match ? parseFloat(match[1]) : 0;
-      vw.classList.add('dragging');
-      vw.setPointerCapture(e.pointerId);
-    }, { passive: true });
-
-    vw.addEventListener('pointermove', function (e) {
-      if (!isDragging) return;
-      var deltaX = getClientX(e) - startX;
-      var newX = startTransformX + deltaX;
-      var maxX = -(inner.scrollWidth - vw.clientWidth);
-      newX = Math.max(maxX, Math.min(0, newX));
-      inner.style.transform = 'translate3d(' + newX + 'px,0,0)';
-      var dist = Math.max(0, inner.scrollWidth - vw.clientWidth);
-      pcur = dist > 0 ? -newX / dist : 0;
-      // Update progress bar
-      var bar = tr.querySelector('[data-pin-bar]');
-      if (bar) bar.style.transform = 'scaleX(' + pcur.toFixed(4) + ')';
-      // Update counter
-      var ct = tr.querySelector('[data-pin-count]');
-      if (ct) {
-        var n = tr.querySelectorAll('[data-clip]').length;
-        var i = Math.min(n, Math.round(pcur * (n - 1)) + 1);
-        var s = ('0' + i).slice(-2) + ' / ' + ('0' + n).slice(-2);
-        if (ct.textContent !== s) ct.textContent = s;
-      }
-    }, { passive: true });
-
-    function endDrag() {
-      if (!isDragging) return;
-      isDragging = false;
-      vw.classList.remove('dragging');
-    }
-
-    vw.addEventListener('pointerup', endDrag);
-    vw.addEventListener('pointercancel', endDrag);
-    vw.addEventListener('pointerleave', endDrag);
   })();
 
   /* ---------- Request builder ---------- */
@@ -563,7 +947,7 @@
   }
   function beff() {
     var d = bdet(), f = {}, k, ty = B.type || d.type;
-    for (k in BF) f[k] = !!(B.feats[k] || d.f[k]);
+    for (k in BF) f[k] = (k in B.feats) ? !!B.feats[k] : !!d.f[k];
     if (ty === 'blog') f.blog = false;
     return { type: ty, f: f, d: d };
   }
@@ -594,6 +978,32 @@
     if (a && !a.children.length) a.innerHTML = chipHTML('b-type', BT);
     if (b && !b.children.length) b.innerHTML = chipHTML('b-feat', BF);
   }
+  // Dynamic estimator calculation
+  function calcEstimate(E) {
+    var pricing = window.GSW_PRICING || {
+      basePrice: { portofolio: 8, landing: 5, company: 12, toko: 18, booking: 15, dashboard: 25 },
+      featureMultiplier: { form: 0.15, pay: 0.35, login: 0.25, search: 0.2, chat: 0.1, gallery: 0.1, cms: 0.3 },
+      baseWeeks: { portofolio: 3, landing: 2, company: 4, toko: 6, booking: 5, dashboard: 8 },
+      featureWeeks: { form: 0.5, pay: 1.5, login: 1, search: 0.5, chat: 0.5, gallery: 0.5, cms: 1 }
+    };
+    var type = E.type || 'portofolio';
+    var features = E.f || {};
+    var base = pricing.basePrice[type] || 10;
+    var mult = 1 + Object.keys(features).reduce(function (sum, k) { return sum + (features[k] ? (pricing.featureMultiplier[k] || 0) : 0); }, 0);
+    var priceMin = Math.round(base * mult * 0.8);
+    var priceMax = Math.round(base * mult * 1.3);
+    var weeks = Math.round((pricing.baseWeeks[type] || 4) + Object.keys(features).reduce(function (sum, k) { return sum + (features[k] ? (pricing.featureWeeks[k] || 0) : 0); }, 0));
+    var confidence = Object.keys(features).filter(function (k) { return features[k]; }).length > 2 ? 'Tinggi' : 'Sedang';
+    return { priceMin: priceMin, priceMax: priceMax, weeks: weeks, confidence: confidence };
+  }
+  function updateEstimateDisplay(est) {
+    var priceEl = document.getElementById('est-price');
+    var timeEl = document.getElementById('est-time');
+    var confEl = document.getElementById('est-conf');
+    if (priceEl) priceEl.textContent = 'Rp ' + est.priceMin + '–' + est.priceMax + ' Juta';
+    if (timeEl) timeEl.textContent = est.weeks + ' Minggu';
+    if (confEl) confEl.textContent = est.confidence;
+  }
   function sync(follow) {
     initB();
     var E = beff(), els, i, k, v, on, ta, g;
@@ -604,8 +1014,8 @@
     }
     els = document.querySelectorAll('[data-b-feat]');
     for (i = 0; i < els.length; i++) {
-      k = els[i].getAttribute('data-b-feat'); on = !!B.feats[k];
-      els[i].setAttribute('aria-pressed', on ? 'true' : 'false'); els[i].setAttribute('data-auto', !on && !!E.d.f[k] ? '1' : '0');
+      k = els[i].getAttribute('data-b-feat'); on = !!E.f[k];
+      els[i].setAttribute('aria-pressed', on ? 'true' : 'false'); els[i].setAttribute('data-auto', '0');
     }
     if (B.auto || follow) {
       g = gen(E);
@@ -615,24 +1025,36 @@
         B.text = g; B.auto = true; B.lastGen = g ? pages(E) : 0;
       }
     }
+    // Update estimator display
+    var est = calcEstimate(E);
+    updateEstimateDisplay(est);
   }
 
   /* --- gambar pratinjau: semua koordinat dibulatkan ke piksel agar garis tajam --- */
-  var FG = [14, 14, 14], K = null, C = null, TT = 0;
+  var ACC = [31, 111, 235], FG = [14, 14, 14], K = null, C = null, TT = 0;
   function R(x, y, w, h, r, a) { x = Math.round(x); y = Math.round(y); w = Math.max(1, Math.round(w)); h = Math.max(1, Math.round(h)); C.fillStyle = rgba(FG, a); rr(C, x, y, w, h, Math.min(r, h / 2, w / 2)); C.fill(); }
   function S(x, y, w, h, r, a) { w = Math.max(2, Math.round(w)); h = Math.max(2, Math.round(h)); C.strokeStyle = rgba(FG, a); C.lineWidth = 1; rr(C, Math.round(x) + .5, Math.round(y) + .5, w - 1, h - 1, Math.min(r, h / 2, w / 2)); C.stroke(); }
   function bars(x, y, w, n, h, gap, a, last) { for (var i = 0; i < n; i++) R(x, y + i * (h + gap), i === n - 1 ? w * (last || .6) : w, h, h / 2, a); return n * h + (n - 1) * gap; }
+  function RA(x, y, w, h, r, a) { x = Math.round(x); y = Math.round(y); w = Math.max(1, Math.round(w)); h = Math.max(1, Math.round(h)); C.fillStyle = rgba(ACC, a); rr(C, x, y, w, h, Math.min(r, h / 2, w / 2)); C.fill(); }
   function IMG(x, y, w, h) {
-    R(x, y, w, h, 6, .06); S(x, y, w, h, 6, .16);
-    if (w > 24 && h > 24) { C.strokeStyle = rgba(FG, .09); C.beginPath(); C.moveTo(Math.round(x) + 6.5, Math.round(y) + 6.5); C.lineTo(Math.round(x + w) - 6.5, Math.round(y + h) - 6.5); C.moveTo(Math.round(x + w) - 6.5, Math.round(y) + 6.5); C.lineTo(Math.round(x) + 6.5, Math.round(y + h) - 6.5); C.stroke(); }
+    x = Math.round(x); y = Math.round(y); w = Math.round(w); h = Math.round(h);
+    var g = C.createLinearGradient(x, y, x + w, y + h);
+    g.addColorStop(0, rgba(ACC, .22)); g.addColorStop(1, rgba(ACC, .06));
+    C.fillStyle = g; rr(C, x, y, w, h, 6); C.fill();
+    if (w > 28 && h > 24) {
+      var s = Math.min(w, h) * .2, cx = x + w * .5, cy = y + h * .56;
+      C.fillStyle = rgba(ACC, .3); C.beginPath(); C.moveTo(x + w * .16, y + h * .86); C.lineTo(cx - s * .6, cy - s * .5); C.lineTo(cx + s * .3, y + h * .86); C.closePath(); C.fill();
+      C.beginPath(); C.moveTo(x + w * .4, y + h * .86); C.lineTo(cx + s * .9, cy - s * .9); C.lineTo(x + w * .86, y + h * .86); C.closePath(); C.fill();
+      C.fillStyle = rgba(ACC, .5); C.beginPath(); C.arc(x + w * .76, y + h * .26, Math.max(2, s * .35), 0, 7); C.fill();
+    }
   }
-  function BTN(x, y, w, h, solid) { if (solid) R(x, y, w, h, h / 2, .9); else S(x, y, w, h, h / 2, .5); }
+  function BTN(x, y, w, h, solid) { if (solid) RA(x, y, w, h, h / 2, 1); else { C.strokeStyle = rgba(ACC, .7); C.lineWidth = 1; rr(C, Math.round(x) + .5, Math.round(y) + .5, Math.max(2, Math.round(w)) - 1, Math.max(2, Math.round(h)) - 1, h / 2); C.stroke(); } }
   function DOT(x, y, r, a) { C.beginPath(); C.arc(Math.round(x) + .5, Math.round(y) + .5, r, 0, 7); C.fillStyle = rgba(FG, a); C.fill(); }
   function CARD(x, y, w, h, price) {
     y += K.f.anim ? Math.round(Math.sin(TT * 1.6 + x * .03) * 1.5) : 0;
     S(x, y, w, h, 8, .28); IMG(x + 6, y + 6, w - 12, Math.round(h * .56));
     bars(x + 8, y + Math.round(h * .56) + 16, w - 16, 2, 5, 5, .32, .6);
-    if (price) R(x + w - 36, y + h - 16, 28, 6, 3, .9);
+    if (price) RA(x + w - 36, y + h - 16, 28, 6, 3, 1);
   }
   function sHero(v, x, y, w) {
     var i, sw;
@@ -657,7 +1079,7 @@
   function sTeam(x, y, w) { var i, s = w / 4; for (i = 0; i < 4; i++) { DOT(x + s * i + s / 2, y + 20, 19, .08); C.strokeStyle = rgba(FG, .25); C.beginPath(); C.arc(Math.round(x + s * i + s / 2) + .5, y + 20.5, 19, 0, 7); C.stroke(); bars(x + s * i + s / 2 - 22, y + 50, 44, 2, 4, 5, .35, .6); } return 66; }
   function sCal(x, y, w) {
     var g = 4, cw = (w - g * 6) / 7, ch = 22, i, j;
-    for (j = 0; j < 4; j++) for (i = 0; i < 7; i++) { if (j === 1 && i === 3) R(x + i * (cw + g), y + j * (ch + g), cw, ch, 5, .9); else S(x + i * (cw + g), y + j * (ch + g), cw, ch, 5, .22); }
+    for (j = 0; j < 4; j++) for (i = 0; i < 7; i++) { if (j === 1 && i === 3) RA(x + i * (cw + g), y + j * (ch + g), cw, ch, 5, 1); else S(x + i * (cw + g), y + j * (ch + g), cw, ch, 5, .22); }
     for (i = 0; i < 4; i++) { if (i === 1) BTN(x + i * 62, y + 4 * (ch + g) + 8, 54, 22, true); else BTN(x + i * 62, y + 4 * (ch + g) + 8, 54, 22, false); }
     return 4 * (ch + g) + 38;
   }
@@ -702,23 +1124,24 @@
     return L;
   }
   function nav(x, y, w) {
-    var rx = x + w - 14, h = 30;
-    R(x, y, w, h, 0, 0); C.fillStyle = rgba(K.bg, 1); C.fillRect(Math.round(x), Math.round(y), Math.round(w), h);
-    R(x, y + h, w, 1, 0, .14);
-    R(x + 14, y + 11, 26, 8, 4, .9);
+    var rx = x + w - 14, h = 30, i, lx;
+    C.fillStyle = rgba(K.bg, 1); C.fillRect(Math.round(x), Math.round(y), Math.round(w), h);
+    R(x, y + h, w, 1, 0, .1);
+    RA(x + 14, y + 8, 14, 14, 4, 1); R(x + 33, y + 12, 28, 6, 3, .85);
+    RA(rx - 40, y + 8, 40, 14, 7, 1); rx -= 50;
     if (K.f.login) { DOT(rx - 8, y + 15, 8, .14); rx -= 24; }
     if (K.f.pay) { S(rx - 16, y + 9, 16, 12, 3, .7); rx -= 26; }
     if (K.f.lang) { S(rx - 30, y + 8, 30, 14, 7, .5); rx -= 38; }
     if (K.f.search) { S(rx - 44, y + 8, 44, 14, 7, .4); R(rx - 36, y + 14, 16, 3, 1, .3); rx -= 52; }
-    for (var i = 0; i < 3; i++) R(rx - 22 - i * 30, y + 13, 20, 4, 2, .3);
+    for (i = 0; i < 3; i++) { lx = rx - 22 - i * 30; if (lx > x + 72) R(lx, y + 13, 20, 4, 2, .3); }
     return h;
   }
   function site(x, y, w, h, v, E, o) {
     var dark = E.f.dark, y0 = o.thumb ? y : y + 22, navH = 30, vh = h - (y0 - y) - navH, px = o.thumb ? 14 : 16, yy, i, fns, hh, u, sc = 0;
-    K = { f: E.f, bg: dark ? [12, 12, 12] : [250, 250, 248] }; FG = dark ? [242, 242, 240] : [18, 18, 18];
+    K = { f: E.f, bg: dark ? [10, 18, 40] : [255, 255, 255] }; FG = dark ? [226, 236, 255] : [11, 31, 75]; ACC = dark ? [96, 160, 255] : [31, 111, 235];
     C.save(); C.globalAlpha = o.alpha;
-    C.fillStyle = rgba(K.bg, 1); rr(C, x, y, w, h, o.thumb ? 6 : 10); C.fill(); C.clip();
-    if (!o.thumb) { for (i = 0; i < 3; i++) DOT(x + 14 + i * 12, y + 11, 3, .22); R(x + w * .3, y + 6, w * .4, 11, 5, .08); }
+    C.fillStyle = rgba(K.bg, 1); rr(C, x, y, w, h, o.thumb ? 6 : 10); C.save(); if (!o.thumb) { C.shadowColor = 'rgba(15,60,160,.24)'; C.shadowBlur = 22; C.shadowOffsetY = 8; } C.fill(); C.restore(); C.clip();
+    if (!o.thumb) { C.fillStyle = rgba(ACC, .07); C.fillRect(Math.round(x), Math.round(y), Math.round(w), 22); for (i = 0; i < 3; i++) DOT(x + 14 + i * 12, y + 11, 3, .22); R(x + w * .3, y + 6, w * .4, 11, 5, .08); }
     if (!o.thumb) B.mx = Math.max(0, B.pageH - vh);
     if (!o.thumb && B.pageH > vh) {
       var mx = B.pageH - vh, dt = clamp(TT - (B.lt || TT), 0, .1);
@@ -731,12 +1154,15 @@
     }
     C.save(); C.beginPath(); C.rect(x, y0 + navH, w, vh); C.clip();
     yy = y0 + navH + 16 - sc; fns = pageFns(E, v, B.set);
-    for (i = 0; i < fns.length; i++) { hh = fns[i](x + px, Math.round(yy), w - px * 2); yy += hh + 24; }
+    for (i = 0; i < fns.length; i++) { if (i === 0) { var gr = C.createLinearGradient(0, yy - 16, 0, yy + 150); gr.addColorStop(0, rgba(ACC, .13)); gr.addColorStop(1, rgba(ACC, 0)); C.fillStyle = gr; C.fillRect(Math.round(x), Math.round(yy - 16), Math.round(w), 166); }
+      hh = fns[i](x + px, Math.round(yy), w - px * 2); yy += hh + 16;
+      if (i < fns.length - 2) R(x + px, yy, w - px * 2, 1, 0, .08);
+      yy += 17; }
     if (!o.thumb) B.pageH = yy - (y0 + navH - sc);
     if (E.f.anim && !o.thumb) { C.fillStyle = rgba(FG, .06); C.fillRect(x + ((TT * 70) % (w + 80)) - 40, y0 + navH, 36, vh); }
     C.restore();
     nav(x, y0, w);
-    if (E.f.chat) { C.beginPath(); C.arc(x + w - 24, y + h - 24, 12, 0, 7); C.fillStyle = rgba(FG, .9); C.fill(); R(x + w - 28, y + h - 27, 8, 2, 1, 0); C.fillStyle = rgba(K.bg, 1); C.fillRect(Math.round(x + w - 28), Math.round(y + h - 26), 8, 2); C.fillRect(Math.round(x + w - 28), Math.round(y + h - 22), 5, 2); }
+    if (E.f.chat) { C.beginPath(); C.arc(x + w - 24, y + h - 24, 12, 0, 7); C.fillStyle = rgba(ACC, 1); C.fill(); R(x + w - 28, y + h - 27, 8, 2, 1, 0); C.fillStyle = rgba(K.bg, 1); C.fillRect(Math.round(x + w - 28), Math.round(y + h - 26), 8, 2); C.fillRect(Math.round(x + w - 28), Math.round(y + h - 22), 5, 2); }
     C.restore();
   }
 
@@ -765,12 +1191,12 @@
     mh = Math.max(120, ty - pad * 2);
     B.main = { x: pad, y: pad, w: W - pad * 2, h: mh };
     site(pad, pad, W - pad * 2, mh, B.pick, E, { alpha: alpha, thumb: false });
-    c.lineWidth = 1; c.strokeStyle = rgba(P.fg, .3); rr(c, pad + .5, pad + .5, W - pad * 2 - 1, mh - 1, 10); c.stroke();
+    c.lineWidth = 1; c.strokeStyle = rgba(ACC, .25); rr(c, pad + .5, pad + .5, W - pad * 2 - 1, mh - 1, 10); c.stroke();
     for (i = 0; i < 6; i++) {
       var tx = pad + i * (tw + gap), sel = i === B.pick, s = tw / 280;
       B.rects[i] = { x: tx, y: ty, w: tw, h: th };
       c.save(); c.translate(tx, ty); c.scale(s, s); site(0, 0, 280, th / s, i, E, { alpha: sel || B.hover === i ? 1 : .6, thumb: true }); c.restore();
-      c.lineWidth = sel ? 2 : 1; c.strokeStyle = rgba(P.fg, sel ? .95 : (B.hover === i ? .6 : .22)); rr(c, tx + .5, ty + .5, tw - 1, th - 1, 6); c.stroke();
+      c.lineWidth = sel ? 2 : 1; c.strokeStyle = rgba(sel || B.hover === i ? ACC : P.fg, sel ? 1 : (B.hover === i ? .8 : .22)); rr(c, tx + .5, ty + .5, tw - 1, th - 1, 6); c.stroke();
     }
   }
 
@@ -809,7 +1235,7 @@
       var v = el.getAttribute('data-b-type');
       B.type = B.type === v ? null : v; B.pick = 0; B.set = 0; sync(true);
     } else if (el.hasAttribute('data-b-feat')) {
-      var k = el.getAttribute('data-b-feat'); B.feats[k] = !B.feats[k]; sync(true);
+      var k = el.getAttribute('data-b-feat'); B.feats[k] = !beff().f[k]; sync(true);
     } else if (el.hasAttribute('data-b-idea')) {
       B.set++; B.pick = (B.pick + 1 + Math.floor(Math.random() * 5)) % 6; sync(true);
     } else if (el.hasAttribute('data-b-tab')) {
@@ -835,7 +1261,7 @@
     }
   });
   document.addEventListener('input', function (e) {
-    if (e.target && e.target.id === 'ringkasan') { B.text = e.target.value || ''; B.auto = !B.text.trim(); var pm = B.text.match(/(\d+)\s*(halaman|page)/i); B.up = pm ? (parseInt(pm[1], 10) !== B.lastGen ? parseInt(pm[1], 10) : B.up) : 0; sync(); }
+    if (e.target && e.target.id === 'ringkasan') { var pd = bdet().f, nd, kk; B.text = e.target.value || ''; B.auto = !B.text.trim(); nd = bdet().f; for (kk in nd) if (nd[kk] !== pd[kk]) delete B.feats[kk]; var pm = B.text.match(/(\d+)\s*(halaman|page)/i); B.up = pm ? (parseInt(pm[1], 10) !== B.lastGen ? parseInt(pm[1], 10) : B.up) : 0; sync(); }
   });
 
   /* ---------- Alur kirim: pesawat + halaman pergantian ---------- */
@@ -850,7 +1276,7 @@
           .then(function (r) { return r.ok ? 'ok' : 'fail'; }, function () { return 'fail'; });
       } catch (x) { return Promise.resolve('fail'); }
     }
-    if (cfg.waNumber) {
+    if (cfg.waNumber || !cfg.sendEndpoint) {
       try { window.open('https://wa.me/' + String(cfg.waNumber).replace(/\D/g, '') + '?text=' + encodeURIComponent(text), '_blank', 'noopener'); } catch (x) {}
       return Promise.resolve('wa');
     }
@@ -963,6 +1389,26 @@
       if (rio) rio.observe(el); else el.classList.add('is-in');
     }
     sync();
+    renderTestimonials();
+  }
+
+  // Render testimonials from config
+  function renderTestimonials() {
+    var track = document.querySelector('[data-testimonials]');
+    var testimonials = window.GSW_TESTIMONIALS || [];
+    if (!track || !testimonials.length) return;
+    track.innerHTML = testimonials.map(function (t) {
+      return '<div class="testimonial-card" role="listitem">' +
+        '<p class="testimonial-quote">' + t.quote + '</p>' +
+        '<div class="testimonial-author">' +
+        '<div class="testimonial-avatar" aria-hidden="true"></div>' +
+        '<div>' +
+        '<p class="testimonial-name">' + t.author + '</p>' +
+        '<p class="testimonial-role">' + t.role + '</p>' +
+        '</div>' +
+        '</div>' +
+        '</div>';
+    }).join('');
   }
   function queueScan() { if (!scanQ) { scanQ = true; requestAnimationFrame(scan); } }
   try { new MutationObserver(queueScan).observe(root, { childList: true, subtree: true }); } catch (e) {}
@@ -1042,8 +1488,8 @@
     cp = new CanvasParticles('#pbg', {
       mouse: { interactionType: 1, distRatio: .6 },
       particles: {
-        color: particleCfg.color || '#D32030',
-        ppm: window.innerWidth < 640 ? (particleCfg.mobile || 28) : (particleCfg.desktop || 45),
+        color: particleCfg.color || '#2F7BFF',
+        ppm: window.innerWidth < 640 ? (particleCfg.mobile || 20) : (particleCfg.desktop || 30),
         maxWork: particleCfg.maxWork || 20,
         connectDistance: particleCfg.connectDistance || 150,
         relSpeed: particleCfg.relSpeed || .45,
@@ -1060,4 +1506,145 @@
   window.addEventListener('scroll', upd, { passive: true });
   window.addEventListener('resize', upd);
   upd();
+})();
+
+/* ---------- bagian 4 ---------- */
+(function () {
+  var INFO = {
+    'Canvas': 'Elemen HTML untuk menggambar grafis 2D lewat JavaScript. Dipakai untuk animasi tanpa gambar atau video.',
+    'WebSocket': 'Koneksi dua arah yang tetap terbuka antara browser dan server. Cocok untuk data real-time seperti game multiplayer.',
+    'Node.js': 'Lingkungan untuk menjalankan JavaScript di sisi server.',
+    'Next.js': 'Framework berbasis React untuk membuat situs cepat, dengan render di server dan routing bawaan.',
+    'Tailwind': 'Framework CSS berbasis kelas utilitas. Tampilan diatur langsung di markup tanpa banyak file CSS.',
+    'React': 'Library JavaScript untuk membangun antarmuka dari komponen yang bisa dipakai ulang.',
+    'Firebase': 'Layanan backend dari Google: database, login, dan hosting tanpa mengelola server sendiri.',
+    'PWA': 'Progressive Web App: situs yang bisa dipasang seperti aplikasi dan tetap berjalan saat koneksi buruk.',
+    'Three.js': 'Library JavaScript untuk menampilkan grafis 3D di browser.',
+    'GSAP': 'Library animasi JavaScript untuk gerakan yang halus dan mudah dikontrol.',
+    'WebGL': 'API browser untuk grafis 2D dan 3D yang dipercepat GPU. Dasar dari banyak visual 3D di web.',
+    'Vite': 'Alat build dan server pengembangan yang cepat untuk proyek web modern.',
+    'Perlin Noise': 'Algoritma acak yang halus, dipakai untuk membuat medan, awan, atau tekstur yang terlihat alami.',
+    'Vanilla JS': 'JavaScript murni, tanpa framework atau library tambahan.',
+    'Parallax': 'Efek kedalaman: lapisan depan bergerak lebih cepat daripada lapisan belakang.',
+    'Web Workers': 'Menjalankan JavaScript di thread terpisah supaya perhitungan berat tidak membuat halaman macet.',
+    'Math.sin': 'Fungsi sinus di JavaScript, dasar untuk membuat gerakan bergelombang.',
+    'RequestAnimationFrame': 'API browser untuk menjalankan animasi selaras dengan refresh layar, sehingga mulus dan hemat baterai.',
+    '3D Math': 'Perhitungan vektor, matriks, dan proyeksi perspektif untuk menampilkan objek 3D di layar 2D.'
+  };
+  var tip = document.createElement('div'), cur = null;
+  tip.className = 'techtip'; tip.setAttribute('role', 'tooltip'); tip.id = 'techtip';
+  document.body.appendChild(tip);
+
+  function prep() {
+    var cs = document.querySelectorAll('.clip-tech .chip');
+    for (var i = 0; i < cs.length; i++) {
+      if (cs[i].__tt) continue;
+      cs[i].__tt = 1;
+      cs[i].setAttribute('role', 'button'); cs[i].setAttribute('tabindex', '0');
+      cs[i].setAttribute('aria-expanded', 'false'); cs[i].setAttribute('aria-describedby', 'techtip');
+    }
+  }
+  function hide() {
+    tip.classList.remove('on');
+    if (cur) cur.setAttribute('aria-expanded', 'false');
+    cur = null;
+  }
+  function show(chip) {
+    var name = chip.textContent.trim();
+    tip.innerHTML = '<b></b><p></p>';
+    tip.firstChild.textContent = name;
+    tip.lastChild.textContent = INFO[name] || 'Teknologi yang dipakai di proyek ini.';
+    tip.style.left = '0px'; tip.style.top = '0px';
+    var r = chip.getBoundingClientRect(), w = tip.offsetWidth, h = tip.offsetHeight;
+    var left = Math.max(12, Math.min(r.left + r.width / 2 - w / 2, window.innerWidth - w - 12));
+    var top = r.top - h - 10;
+    if (top < 12) top = r.bottom + 10;
+    tip.style.left = Math.round(left) + 'px'; tip.style.top = Math.round(top) + 'px';
+    if (cur) cur.setAttribute('aria-expanded', 'false');
+    cur = chip; chip.setAttribute('aria-expanded', 'true');
+    tip.classList.add('on');
+  }
+  function toggle(chip) { cur === chip ? hide() : show(chip); }
+
+  document.addEventListener('click', function (e) {
+    var chip = e.target.closest ? e.target.closest('.clip-tech .chip') : null;
+    if (chip) { e.preventDefault(); e.stopPropagation(); toggle(chip); return; }
+    if (!e.target.closest || !e.target.closest('.techtip')) hide();
+  }, true);
+  document.addEventListener('keydown', function (e) {
+    var chip = e.target.closest ? e.target.closest('.clip-tech .chip') : null;
+    if (chip && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); toggle(chip); }
+    else if (e.key === 'Escape') hide();
+  });
+  window.addEventListener('scroll', hide, { passive: true });
+  window.addEventListener('resize', hide);
+  prep();
+  try { new MutationObserver(prep).observe(document.body, { childList: true, subtree: true }); } catch (x) {}
+})();
+
+/* ---------- bagian 5 ---------- */
+(function () {
+  var box = document.querySelector('.logic'), cv = box && box.querySelector('.logic-bg');
+  if (!cv || !cv.getContext) return;
+  var ctx = cv.getContext('2d'), pts = [], W = 0, H = 0, raf = 0, vis = false, i;
+  var red = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var dpr = Math.min(window.devicePixelRatio || 1, 2), LINK = 120;
+
+  function size() {
+    var r = box.getBoundingClientRect();
+    W = Math.max(1, r.width); H = Math.max(1, r.height);
+    cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    var n = Math.round(Math.max(14, Math.min(34, W * H / 22000)));
+    while (pts.length < n) pts.push({ x: Math.random() * W, y: Math.random() * H, vx: (Math.random() - .5) * .2, vy: (Math.random() - .5) * .2 });
+    pts.length = n;
+    for (i = 0; i < n; i++) { if (pts[i].x > W) pts[i].x = Math.random() * W; if (pts[i].y > H) pts[i].y = Math.random() * H; }
+    draw(false);
+  }
+  function draw(move) {
+    ctx.clearRect(0, 0, W, H);
+    var a, b, d, p, j;
+    for (i = 0; i < pts.length; i++) {
+      p = pts[i];
+      if (move) {
+        p.vx += (Math.random() - .5) * .018; p.vy += (Math.random() - .5) * .018;
+        var sp = Math.hypot(p.vx, p.vy);
+        if (sp > .26) { p.vx *= .26 / sp; p.vy *= .26 / sp; } else if (sp < .05) { p.vx *= 1.4; p.vy *= 1.4; }
+        p.x += p.vx; p.y += p.vy;
+        if (p.x < 0) { p.x = 0; p.vx = Math.abs(p.vx); } else if (p.x > W) { p.x = W; p.vx = -Math.abs(p.vx); }
+        if (p.y < 0) { p.y = 0; p.vy = Math.abs(p.vy); } else if (p.y > H) { p.y = H; p.vy = -Math.abs(p.vy); }
+      }
+    }
+    ctx.lineWidth = 1;
+    for (i = 0; i < pts.length; i++) {
+      a = pts[i];
+      for (j = i + 1; j < pts.length; j++) {
+        b = pts[j]; d = Math.hypot(a.x - b.x, a.y - b.y);
+        if (d < LINK) { ctx.strokeStyle = 'rgba(31,111,235,' + ((1 - d / LINK) * .16).toFixed(3) + ')'; ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke(); }
+      }
+    }
+    ctx.fillStyle = 'rgba(31,111,235,.28)';
+    for (i = 0; i < pts.length; i++) { ctx.beginPath(); ctx.arc(pts[i].x, pts[i].y, 1.6, 0, 6.2832); ctx.fill(); }
+  }
+  function loop() { if (!vis) return; draw(true); raf = requestAnimationFrame(loop); }
+
+  size();
+  if (window.ResizeObserver) new ResizeObserver(size).observe(box); else window.addEventListener('resize', size);
+  if (!red && window.IntersectionObserver) {
+    new IntersectionObserver(function (es) {
+      vis = es[0].isIntersecting; cancelAnimationFrame(raf); if (vis) loop();
+    }).observe(box);
+  }
+
+  // Parallax sangat halus untuk kartu (tidak jalan jika reduced motion)
+  var g = box.querySelector('.logic-g'), tick = false;
+  if (g && !red) {
+    var upd = function () {
+      tick = false;
+      var r = g.getBoundingClientRect(), p = ((r.top + r.height / 2) - window.innerHeight / 2) / window.innerHeight;
+      g.style.setProperty('--py', (Math.max(-1, Math.min(1, p)) * 10).toFixed(2));
+    };
+    window.addEventListener('scroll', function () { if (!tick) { tick = true; requestAnimationFrame(upd); } }, { passive: true });
+    upd();
+  }
 })();

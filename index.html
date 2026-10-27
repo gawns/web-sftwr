@@ -2,33 +2,30 @@
 <html lang="id"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#0E0808">
+<meta name="theme-color" content="#F4F8FF">
 <title>G. Software Web</title>
-<link rel="stylesheet" href="style.css">
-
-
 <link rel="stylesheet" href="style.css">
 
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=Karla:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
 </head>
 <body>
 <canvas id="pbg" aria-hidden="true"></canvas>
-<div style="background: radial-gradient(1200px 720px at 50% 0, rgba(122,14,22,.30), transparent 70%), radial-gradient(900px 480px at 50% 100%, rgba(80,8,14,.22), transparent 70%), var(--bg); background-repeat: no-repeat; color: var(--fg); min-height: 100vh" data-canvas-width="1280" data-canvas-height="5600" data-document-role="page" data-label="Dark">
+<div style="background: radial-gradient(1200px 720px at 50% 0, rgba(47,123,255,.16), transparent 70%), radial-gradient(900px 480px at 50% 100%, rgba(47,123,255,.10), transparent 70%), var(--bg); background-repeat: no-repeat; color: var(--fg); min-height: 100vh" data-canvas-width="1280" data-canvas-height="5600" data-document-role="page" data-label="Dark">
 
   <!-- Skip link for accessibility -->
-  <a href="#main-content" class="skip-link">Lewati ke konten utama</a>
+  <a href="#top" class="skip-link">Lewati ke konten utama</a>
 
   <!-- Navbar pill -->
   <div class="navwrap">
     <header class="pill">
-      <a class="logo" href="#top">G. Software Web</a>
+      <a class="logo" href="#top" aria-label="G. Software Web, ke atas"><svg class="logo-mark" viewBox="0 0 32 32" aria-hidden="true"><defs><linearGradient id="lga" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4C9AFF"/><stop offset="1" stop-color="#1448C8"/></linearGradient></defs><rect width="32" height="32" rx="9" fill="url(#lga)"/><path d="M22.1 10.9A8 8 0 1 0 24 16h-8" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><circle cx="24.6" cy="9" r="1.9" fill="#fff"/></svg><span>G. Software Web</span></a>
       <nav class="nav-desktop" aria-label="Navigasi utama">
         <a class="navlink" href="#tentang">Tentang</a>
         <a class="navlink" href="#karya">Karya</a>
         <a class="navlink" href="#alur">Alur</a>
         <a class="btn sm" href="#penawaran">Minta penawaran <span class="arr" aria-hidden="true">→</span></a>
       </nav>
-      <button class="nav-hamburger" aria-expanded="false" aria-controls="mobile-drawer" aria-label="Buka menu navigasi" type="button">
+      <button class="nav-hamburger" aria-expanded="false" aria-controls="mobile-overlay" aria-label="Buka menu navigasi" type="button">
         <span class="hamburger-line" aria-hidden="true"></span>
         <span class="hamburger-line" aria-hidden="true"></span>
         <span class="hamburger-line" aria-hidden="true"></span>
@@ -36,27 +33,42 @@
     </header>
   </div>
 
-  <!-- Mobile navigation drawer -->
-  <div class="mobile-drawer" id="mobile-drawer" role="dialog" aria-modal="true" aria-label="Menu navigasi" hidden>
-    <div class="mobile-drawer-backdrop" aria-hidden="true"></div>
-    <nav class="mobile-drawer-content" aria-label="Navigasi mobile">
-      <div class="mobile-drawer-header">
-        <a class="logo" href="#top">G. Software Web</a>
-        <button class="mobile-drawer-close" aria-label="Tutup menu navigasi" type="button">
-          <span aria-hidden="true">✕</span>
-        </button>
+  <!-- Mobile navigation overlay (full-screen) -->
+  <div class="mobile-overlay" id="mobile-overlay" role="dialog" aria-modal="true" aria-label="Menu navigasi" hidden>
+    <div class="mobile-overlay-backdrop" aria-hidden="true"></div>
+    <div class="mobile-overlay-content">
+      <div class="mo-top">
+        <a class="logo mobile-overlay-link-close" href="#top" data-mo-close><svg class="logo-mark" viewBox="0 0 32 32" aria-hidden="true"><defs><linearGradient id="lgb" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4C9AFF"/><stop offset="1" stop-color="#1448C8"/></linearGradient></defs><rect width="32" height="32" rx="9" fill="url(#lgb)"/><path d="M22.1 10.9A8 8 0 1 0 24 16h-8" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><circle cx="24.6" cy="9" r="1.9" fill="#fff"/></svg><span>G. Software Web</span></a>
+        <button type="button" class="mo-close" aria-label="Tutup menu navigasi"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
       </div>
-      <ul class="mobile-drawer-links">
-        <li><a class="mobile-drawer-link" href="#tentang">Tentang</a></li>
-        <li><a class="mobile-drawer-link" href="#karya">Karya</a></li>
-        <li><a class="mobile-drawer-link" href="#alur">Alur</a></li>
-        <li><a class="mobile-drawer-link btn sm" href="#penawaran">Minta penawaran <span class="arr" aria-hidden="true">→</span></a></li>
-      </ul>
-    </nav>
+      <nav aria-label="Navigasi mobile">
+        <ul class="mobile-overlay-links">
+          <li style="--i:1"><a class="mobile-overlay-link" href="#tentang"><span class="mo-n">01</span><span>Tentang</span><span class="mo-a" aria-hidden="true">→</span></a></li>
+          <li style="--i:2"><a class="mobile-overlay-link" href="#karya"><span class="mo-n">02</span><span>Karya</span><span class="mo-a" aria-hidden="true">→</span></a></li>
+          <li style="--i:3"><a class="mobile-overlay-link" href="#alur"><span class="mo-n">03</span><span>Alur</span><span class="mo-a" aria-hidden="true">→</span></a></li>
+          <li style="--i:4"><a class="mobile-overlay-link" href="#penawaran"><span class="mo-n">04</span><span>Penawaran</span><span class="mo-a" aria-hidden="true">→</span></a></li>
+        </ul>
+      </nav>
+      <div class="mo-actions">
+        <a class="btn mo-cta" href="#penawaran" data-send-trigger>Minta penawaran <span class="arr" aria-hidden="true">→</span></a>
+        <a class="btn ghost" href="#karya" data-mo-close>Lihat karya</a>
+      </div>
+      <div class="mo-social"><span>Terhubung</span><nav class="foot-links" aria-label="Profil pengembang">
+        <a class="foot-link" href="https://github.com/ghaiyyazatha" target="_blank" rel="noopener" aria-label="GitHub">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.305-.536-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
+        </a>
+        <a class="foot-link" href="https://linkedin.com/in/ghaiyyazatha" target="_blank" rel="noopener" aria-label="LinkedIn">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        </a>
+        <a class="foot-link" href="https://www.tiktok.com/@softwarehouse_bsdg" target="_blank" rel="noopener" aria-label="TikTok">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>
+        </a>
+      </nav></div>
+    </div>
   </div>
 
   <!-- Hero -->
-  <section id="top main-content" class="hero wrap">
+  <section id="top" class="hero wrap">
     
     <h1 class="ga" aria-label="G. Software Web"><span class="m" aria-hidden="true"><span class="l">G. Software</span></span><span class="m" aria-hidden="true"><span class="l acc">Web</span></span></h1>
     <div class="herorow">
@@ -92,52 +104,160 @@
     <div class="pinview" data-pin-view="">
       <div class="pininner" data-pin-inner="">
         <div class="intro">
-          
+
           <h2 class="stitle">Sembilan karya dan gerakan yang sudah dibuat.</h2>
           <a class="btn ghost sm skipbtn" href="#penawaran">Lewati ke penawaran <span class="arr" aria-hidden="true">→</span></a>
-          
+
         </div>
-        <article class="clip" data-clip="">
-          <canvas class="clipcv" data-scene="pool" role="img" aria-label="Meja biliar dilihat dari atas, tongkat memukul bola putih ke susunan bola"></canvas>
-          <div class="cliphead"><h3 class="cliptitle">Billiard Hub</h3></div>
+        <article class="clip" data-clip="" data-project="billiard-hub">
+          <div class="clip-link" role="group" aria-label="Proyek Billiard Hub">
+            <div class="clip-media">
+              <canvas class="clipcv" data-scene="pool" role="img" aria-label="Meja biliar dilihat dari atas, tongkat memukul bola putih ke susunan bola"></canvas>
+            </div>
+            <div class="clip-body">
+              <h3 class="cliptitle">Billiard Hub</h3>
+              <p class="clipdesc">Real-time multiplayer billiards with physics engine</p>
+              <div class="clip-tech">
+                <span class="chip">Canvas</span>
+                <span class="chip">WebSocket</span>
+                <span class="chip">Node.js</span>
+              </div>
+            </div>
+          </div>
         </article>
-        <article class="clip" data-clip="">
-          <canvas class="clipcv" data-scene="food" role="img" aria-label="Kue leker dituang di loyang bundar, diberi cokelat dan keju, lalu dilipat setengah lingkaran"></canvas>
-          <div class="cliphead"><h3 class="cliptitle">Leckers Turi</h3></div>
+        <article class="clip" data-clip="" data-project="leckers-turi">
+          <div class="clip-link" role="group" aria-label="Proyek Leckers Turi">
+            <div class="clip-media">
+              <canvas class="clipcv" data-scene="food" role="img" aria-label="Kue leker dituang di loyang bundar, diberi cokelat dan keju, lalu dilipat setengah lingkaran"></canvas>
+            </div>
+            <div class="clip-body">
+              <h3 class="cliptitle">Leckers Turi</h3>
+              <p class="clipdesc">E-commerce for traditional Indonesian snacks with custom animations</p>
+              <div class="clip-tech">
+                <span class="chip">Next.js</span>
+                <span class="chip">Canvas</span>
+                <span class="chip">Tailwind</span>
+              </div>
+            </div>
+          </div>
         </article>
-        <article class="clip" data-clip="">
-          <canvas class="clipcv" data-scene="mono" role="img" aria-label="Aplikasi web laundry: mesin cuci berputar di jendela browser dengan status jemput, cuci, setrika, antar"></canvas>
-          <div class="cliphead"><h3 class="cliptitle">Miftyahlaun</h3></div>
+        <article class="clip" data-clip="" data-project="miftyahlaun">
+          <div class="clip-link" role="group" aria-label="Proyek Miftyahlaun">
+            <div class="clip-media">
+              <canvas class="clipcv" data-scene="mono" role="img" aria-label="Aplikasi web laundry: mesin cuci berputar di jendela browser dengan status jemput, cuci, setrika, antar"></canvas>
+            </div>
+            <div class="clip-body">
+              <h3 class="cliptitle">Miftyahlaun</h3>
+              <p class="clipdesc">Laundry service web app with real-time tracking</p>
+              <div class="clip-tech">
+                <span class="chip">React</span>
+                <span class="chip">Firebase</span>
+                <span class="chip">PWA</span>
+              </div>
+            </div>
+          </div>
         </article>
-        <article class="clip" data-clip="">
-          <canvas class="clipcv" data-scene="chair" role="img" aria-label="Katalog web mebel Jepara: kursi, meja, dan lemari ukir digambar satu per satu di jendela browser"></canvas>
-          <div class="cliphead"><h3 class="cliptitle">Jepara Mebelku</h3></div>
+        <article class="clip" data-clip="" data-project="jepara-mebelku">
+          <div class="clip-link" role="group" aria-label="Proyek Jepara Mebelku">
+            <div class="clip-media">
+              <canvas class="clipcv" data-scene="chair" role="img" aria-label="Katalog web mebel Jepara: kursi, meja, dan lemari ukir digambar satu per satu di jendela browser"></canvas>
+            </div>
+            <div class="clip-body">
+              <h3 class="cliptitle">Jepara Mebelku</h3>
+              <p class="clipdesc">Jepara furniture catalog with interactive 3D viewer</p>
+              <div class="clip-tech">
+                <span class="chip">Three.js</span>
+                <span class="chip">Next.js</span>
+                <span class="chip">GSAP</span>
+              </div>
+            </div>
+          </div>
         </article>
-        <article class="clip" data-clip="">
-          <canvas class="clipcv" data-scene="wood" role="img" aria-label="Garis gelombang serat kayu yang dibelokkan satu titik pusat seperti mata kayu"></canvas>
-          <div class="cliphead"><h3 class="cliptitle">Serat Kayu</h3></div>
+        <article class="clip" data-clip="" data-project="serat-kayu">
+          <div class="clip-link" role="group" aria-label="Proyek Serat Kayu">
+            <div class="clip-media">
+              <canvas class="clipcv" data-scene="wood" role="img" aria-label="Garis gelombang serat kayu yang dibelokkan satu titik pusat seperti mata kayu"></canvas>
+            </div>
+            <div class="clip-body">
+              <h3 class="cliptitle">Serat Kayu</h3>
+              <p class="clipdesc">Wood grain pattern generator for designers</p>
+              <div class="clip-tech">
+                <span class="chip">Canvas</span>
+                <span class="chip">WebGL</span>
+                <span class="chip">Vite</span>
+              </div>
+            </div>
+          </div>
         </article>
-        <article class="clip" data-clip="">
-          <canvas class="clipcv" data-scene="island" role="img" aria-label="Pulau low-poly dari segitiga dengan langit gradasi dan gelombang sinus"></canvas>
-          <div class="cliphead"><h3 class="cliptitle">Pulau Senja</h3></div>
+        <article class="clip" data-clip="" data-project="pulau-senja">
+          <div class="clip-link" role="group" aria-label="Proyek Pulau Senja">
+            <div class="clip-media">
+              <canvas class="clipcv" data-scene="island" role="img" aria-label="Pulau low-poly dari segitiga dengan langit gradasi dan gelombang sinus"></canvas>
+            </div>
+            <div class="clip-body">
+              <h3 class="cliptitle">Pulau Senja</h3>
+              <p class="clipdesc">Low-poly island generator with procedural terrain</p>
+              <div class="clip-tech">
+                <span class="chip">Canvas</span>
+                <span class="chip">Perlin Noise</span>
+                <span class="chip">Vanilla JS</span>
+              </div>
+            </div>
+          </div>
         </article>
-        <article class="clip" data-clip="">
-          <canvas class="clipcv" data-scene="mining" role="img" aria-label="Lapisan tanah parallax dengan titik ore yang bergerak berbeda kecepatan"></canvas>
-          <div class="cliphead"><h3 class="cliptitle">Mining Depths</h3></div>
+        <article class="clip" data-clip="" data-project="mining-depths">
+          <div class="clip-link" role="group" aria-label="Proyek Mining Depths">
+            <div class="clip-media">
+              <canvas class="clipcv" data-scene="mining" role="img" aria-label="Lapisan tanah parallax dengan titik ore yang bergerak berbeda kecepatan"></canvas>
+            </div>
+            <div class="clip-body">
+              <h3 class="cliptitle">Mining Depths</h3>
+              <p class="clipdesc">Parallax mining visualization with ore simulation</p>
+              <div class="clip-tech">
+                <span class="chip">Canvas</span>
+                <span class="chip">Parallax</span>
+                <span class="chip">Web Workers</span>
+              </div>
+            </div>
+          </div>
         </article>
-        <article class="clip" data-clip="">
-          <canvas class="clipcv" data-scene="wave" role="img" aria-label="Grid titik yang membentuk gelombang dari fungsi sinus"></canvas>
-          <div class="cliphead"><h3 class="cliptitle">Portofolks</h3></div>
+        <article class="clip" data-clip="" data-project="portofolks">
+          <div class="clip-link" role="group" aria-label="Proyek Portofolks">
+            <div class="clip-media">
+              <canvas class="clipcv" data-scene="wave" role="img" aria-label="Grid titik yang membentuk gelombang dari fungsi sinus"></canvas>
+            </div>
+            <div class="clip-body">
+              <h3 class="cliptitle">Portofolks</h3>
+              <p class="clipdesc">Interactive point-cloud wave visualization</p>
+              <div class="clip-tech">
+                <span class="chip">Canvas</span>
+                <span class="chip">Math.sin</span>
+                <span class="chip">RequestAnimationFrame</span>
+              </div>
+            </div>
+          </div>
         </article>
-        <article class="clip" data-clip="">
-          <canvas class="clipcv" data-scene="car" role="img" aria-label="Mobil wireframe 3D yang berputar dengan proyeksi perspektif"></canvas>
-          <div class="cliphead"><h3 class="cliptitle">Portofolio 3D Mobil</h3></div>
+        <article class="clip" data-clip="" data-project="portfolio-3d-mobil">
+          <div class="clip-link" role="group" aria-label="Proyek Portofolio 3D Mobil">
+            <div class="clip-media">
+              <canvas class="clipcv" data-scene="car" role="img" aria-label="Mobil wireframe 3D yang berputar dengan proyeksi perspektif"></canvas>
+            </div>
+            <div class="clip-body">
+              <h3 class="cliptitle">Portofolio 3D Mobil</h3>
+              <p class="clipdesc">Wireframe 3D car with perspective projection</p>
+              <div class="clip-tech">
+                <span class="chip">Canvas</span>
+                <span class="chip">3D Math</span>
+                <span class="chip">Vanilla JS</span>
+              </div>
+            </div>
+          </div>
         </article>
       </div>
       <div class="pinfoot">
         <span class="mono" data-pin-count="" hidden>01 / 09</span>
         <div class="pinbar"><i data-pin-bar=""></i></div>
-        
+
       </div>
     </div>
   </section>
@@ -150,10 +270,21 @@
     </div>
     <div class="rail" data-rail="">
       <div class="railline"></div><div class="railfill"></div>
-      <div class="step" data-step=""><span class="dot"></span><span class="stepn">01</span><h3 class="steph">Brief</h3></div>
-      <div class="step" data-step=""><span class="dot"></span><span class="stepn">02</span><h3 class="steph">Penawaran</h3></div>
-      <div class="step" data-step=""><span class="dot"></span><span class="stepn">03</span><h3 class="steph">Bangun</h3></div>
-      <div class="step" data-step=""><span class="dot"></span><span class="stepn">04</span><h3 class="steph">Rilis</h3></div>
+      <div class="step" data-step=""><span class="dot"></span><span class="stepn">01</span><h3 class="steph">Brief</h3><p class="stepp">Pilih jenis proyek, fitur, dan tulis ringkasan di form bawah. Pratinjau rancangan langsung terbentuk, jadi kebutuhanmu sudah terlihat sejak awal.</p></div>
+      <div class="step" data-step=""><span class="dot"></span><span class="stepn">02</span><h3 class="steph">Penawaran</h3><p class="stepp">Ringkasan dan kontakmu dikirim. Balasan lewat email atau WhatsApp berisi cakupan kerja, harga, dan perkiraan waktu.</p></div>
+      <div class="step" data-step=""><span class="dot"></span><span class="stepn">03</span><h3 class="steph">Bangun</h3><p class="stepp">Setelah penawaran disetujui, pengerjaan dimulai. Kamu melihat hasil sementara dan memberi masukan sebelum lanjut.</p></div>
+      <div class="step" data-step=""><span class="dot"></span><span class="stepn">04</span><h3 class="steph">Rilis</h3><p class="stepp">Situs diuji di ponsel dan desktop, diperbaiki bila ada yang janggal, lalu dipublikasikan.</p></div>
+    </div>
+    <div class="logic" data-reveal="">
+      <div class="logic-amb" aria-hidden="true"><i class="b1"></i><i class="b2"></i><i class="b3"></i><i class="r1"></i><i class="r2"></i></div>
+      <canvas class="logic-bg" aria-hidden="true"></canvas>
+      <h3 class="logic-t">Bagaimana penawaran ditentukan</h3>
+      <div class="logic-g">
+        <div class="lg"><span class="lg-n">1</span><b>Jenis proyek</b><p>Menentukan kerangka dan jumlah halaman dasar, misalnya landing page 1 halaman, toko online 6 halaman.</p></div>
+        <div class="lg"><span class="lg-n">2</span><b>Jumlah halaman</b><p>Dibaca dari ringkasanmu, misalnya “5 halaman”. Halaman tambahan berarti pekerjaan tambahan.</p></div>
+        <div class="lg"><span class="lg-n">3</span><b>Fitur tambahan</b><p>Pembayaran, login, pencarian, dua bahasa, dan sejenisnya. Makin banyak dan kompleks, makin besar cakupannya.</p></div>
+        <div class="lg"><span class="lg-n">4</span><b>Tampilan</b><p>Mode gelap dan animasi ikut masuk rancangan, jadi ikut dibahas di penawaran.</p></div>
+      </div>
     </div>
   </section>
 
@@ -184,7 +315,7 @@
       <div class="bstage">
         <div class="bwrap">
           <canvas class="bcv" id="bld-canvas" data-scene="builder" role="img" aria-label="Kanvas pratinjau rancangan website sesuai pilihan dan ringkasan kebutuhan"></canvas>
-          
+
         </div>
         <div class="grp">
           <label class="glabel" for="kontak">Kontak untuk balasan</label>
@@ -200,19 +331,23 @@
 
   <footer class="wrap">
     <div class="foot">
-      <span>© 2026 G. Software Web</span>
-      
+      <span class="foot-brand"><svg class="logo-mark" viewBox="0 0 32 32" aria-hidden="true"><defs><linearGradient id="lgc" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4C9AFF"/><stop offset="1" stop-color="#1448C8"/></linearGradient></defs><rect width="32" height="32" rx="9" fill="url(#lgc)"/><path d="M22.1 10.9A8 8 0 1 0 24 16h-8" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><circle cx="24.6" cy="9" r="1.9" fill="#fff"/></svg>© 2026 G. Software Web</span>
+      <nav class="foot-links" aria-label="Profil pengembang">
+        <a class="foot-link" href="https://github.com/ghaiyyazatha" target="_blank" rel="noopener" aria-label="GitHub">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.305-.536-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
+        </a>
+        <a class="foot-link" href="https://linkedin.com/in/ghaiyyazatha" target="_blank" rel="noopener" aria-label="LinkedIn">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        </a>
+        <a class="foot-link" href="https://www.tiktok.com/@softwarehouse_bsdg" target="_blank" rel="noopener" aria-label="TikTok">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>
+        </a>
+      </nav>
     </div>
   </footer>
 
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/canvasparticles-js@4.5.6/dist/index.umd.js"></script>
-<script src="config.js"></script>
-<script src="navigation.js"></script>
-
-
-
-
-  <script src="script.js"></script>
+<script src="script.js"></script>
 </body></html>
