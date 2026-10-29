@@ -13,7 +13,10 @@
 //               If both empty, copies message to clipboard
 window.GSW_CONFIG = {
   sendEndpoint: '',  // kosong: pesan dikirim lewat WhatsApp (wa.me)
-  waNumber: '6283114241995'  // 083114241995
+  waNumber: '6283114241995',  // 083114241995
+  telegramUser: 'gawns',      // Telegram: @gawns
+  discordId: '541070944752631818',  // Discord user ID
+  discordUser: 'gawns'        // Discord: @gawns
 };
 
 // ============================================================================
@@ -48,12 +51,12 @@ window.GSW_TEXT = {
     },
     {
       label: 'Kirim',
-      text: 'Belum tersambung ke email atau WhatsApp. Akan diaktifkan setelah desain final.'
+      text: 'Pilih Telegram, Discord, atau WhatsApp. Pesan yang sudah disiapkan tinggal dikirim.'
     }
   ],
 
   // Showcase
-  showcaseTitle: 'Sembilan karya dan gerakan yang sudah dibuat.',
+  showcaseTitle: 'Karya dan gerakan yang sudah dibuat.',
   skipShowcase: 'Lewati ke penawaran',
 
   // Process
@@ -133,8 +136,8 @@ window.GSW_TEXT = {
   summaryLabel: 'Ringkasan kebutuhan',
   summaryPlaceholder: 'Contoh: portofolio fotografer, 5 halaman, ada galeri dan form kontak, tampilan gelap.',
   ideaButton: 'Ide lain',
-  contactLabel: 'Kontak untuk balasan',
-  contactPlaceholder: 'Email atau WhatsApp',
+  contactLabel: 'Nama kamu',
+  contactPlaceholder: 'Tulis namamu',
   sendButton: 'Kirim',
 
   // Send Flow
@@ -144,14 +147,17 @@ window.GSW_TEXT = {
   sendResult: {
     ok: 'Terkirim, Terima Kasih',
     wa: 'Pesan sudah siap di WhatsApp. Tekan kirim di sana.',
+    tg: 'Pesan sudah disalin. Tempel dan kirim di chat Telegram.',
+    dc: 'Pesan sudah disalin. Tempel dan kirim di DM Discord.',
+    chat: 'Chat sudah dibuka. Tulis pesanmu di sana.',
     copied: 'Belum tersambung. Ringkasan disalin.',
     nocfg: 'Belum tersambung ke penerima.',
     fail: 'Belum terkirim. Coba lagi sebentar.'
   },
   sendErrorConnection: 'Belum terkirim. Periksa koneksi lalu coba lagi.',
   sendErrorNoConfig: 'Pengiriman belum tersambung ke penerima.',
-  statusRequiredContact: 'Isi email atau WhatsApp dulu.',
-  validationError: 'Masukkan email atau nomor WhatsApp yang valid (contoh: 081234567890 atau email@domain.com).',
+  statusRequiredContact: 'Tulis namamu dulu.',
+  validationError: 'Nama minimal 2 huruf.',
 
   // Footer
   copyright: '© 2026 G. Software Web'
@@ -172,6 +178,7 @@ window.GSW_SCENES = {
   mining: { name: 'Mining Depths' },
   wave: { name: 'Portofolks' },
   car: { name: 'Portofolio 3D Mobil' },
+  shop: { name: 'Toko Digital' },
   builder: { name: 'Preview Builder' }
 };
 
@@ -258,6 +265,15 @@ window.GSW_PROJECTS = [
     description: 'Wireframe 3D car with perspective projection',
     tech: ['Canvas', '3D Math', 'Vanilla JS'],
     demoUrl: 'https://car3d.example.com',
+    thumbnail: null
+  },
+  {
+    id: 'toko-digital',
+    title: 'Toko Digital',
+    scene: 'shop',
+    description: 'Simple digital store with geolocation',
+    tech: ['React', 'JS', 'Math'],
+    demoUrl: 'https://tokodigital.example.com',
     thumbnail: null
   }
 ];
@@ -346,8 +362,7 @@ window.GSW_UTILS = {
   validateContact: function (value) {
     var v = (value || '').trim();
     if (!v) return false;
-    return GSW_VALIDATION.contactPatterns.email.test(v) ||
-           GSW_VALIDATION.contactPatterns.phone.test(v);
+    return v.length >= 2 && v.length <= 60;
   },
 
   /**
@@ -624,6 +639,35 @@ window.GSW_UTILS = {
     });
   }
 
+  /* ---------- Karya baru: Toko Digital (geolokasi) ---------- */
+  function shop(c, w, h, t) {
+    var mw = Math.min(w * .9, h * 1.5), mh = mw * .62, x = (w - mw) / 2, y = (h - mh) / 2, i;
+    c.fillStyle = mix(P.bg, P.fg, .05); rr(c, x, y, mw, mh, 14); c.fill();
+    c.save(); rr(c, x, y, mw, mh, 14); c.clip();
+    c.strokeStyle = rgba(P.fg, .12); c.lineWidth = 1;
+    for (i = 1; i < 8; i++) { var gx = x + mw * i / 8; c.beginPath(); c.moveTo(gx, y); c.lineTo(gx + Math.sin(i) * mh * .1, y + mh); c.stroke(); }
+    for (i = 1; i < 5; i++) { var gy = y + mh * i / 5; c.beginPath(); c.moveTo(x, gy); c.lineTo(x + mw, gy + Math.cos(i * 2) * mh * .05); c.stroke(); }
+    var ux = x + mw * (.5 + .28 * Math.sin(t * .5)), uy = y + mh * (.52 + .18 * Math.sin(t * .8 + 1)), rad = mh * .34, pr = (t * .6) % 1, near = 0;
+    c.fillStyle = rgba(P.fg, .06); c.beginPath(); c.arc(ux, uy, rad, 0, 7); c.fill();
+    c.strokeStyle = rgba(P.fg, .4); c.lineWidth = 1.2; c.beginPath(); c.arc(ux, uy, rad, 0, 7); c.stroke();
+    c.strokeStyle = rgba(P.fg, .5 * (1 - pr)); c.beginPath(); c.arc(ux, uy, rad * pr, 0, 7); c.stroke();
+    c.font = '500 10px "IBM Plex Mono", monospace';
+    [[.2, .3], [.35, .74], [.62, .24], [.78, .64], [.5, .5], [.9, .3], [.14, .68]].forEach(function (s) {
+      var sx = x + mw * s[0], sy = y + mh * s[1], d = Math.sqrt((sx - ux) * (sx - ux) + (sy - uy) * (sy - uy)), on = d < rad;
+      if (on) {
+        near++;
+        c.strokeStyle = rgba(P.fg, .45); c.lineWidth = 1; c.beginPath(); c.moveTo(ux, uy); c.lineTo(sx, sy); c.stroke();
+        c.fillStyle = rgba(P.fg, .85); c.fillText(Math.round(d / mw * 2000) + ' m', sx + 8, sy - 6);
+      }
+      c.fillStyle = rgba(P.fg, on ? .95 : .25); c.fillRect(sx - 4, sy - 4, 8, 8);
+    });
+    c.fillStyle = rgba(P.fg, 1); c.beginPath(); c.arc(ux, uy, 5, 0, 7); c.fill();
+    c.strokeStyle = rgba(P.bg, .9); c.lineWidth = 2; c.beginPath(); c.arc(ux, uy, 5, 0, 7); c.stroke();
+    c.fillStyle = rgba(P.fg, .8); c.fillText('Terdekat: ' + near + ' toko', x + 12, y + 18);
+    c.restore();
+    c.strokeStyle = mix(P.bg, P.fg, .5); c.lineWidth = 1.5; rr(c, x, y, mw, mh, 14); c.stroke();
+  }
+
   /* ---------- Karya baru: Billiard Hub ---------- */
   function pool(c, w, h, t) {
     var tw = Math.min(w * .88, h * 1.7), th = tw * .54, x = (w - tw) / 2, y = (h - th) / 2 - h * .02, b = tw * .045, cy = y + th / 2;
@@ -869,7 +913,7 @@ window.GSW_UTILS = {
     c.textAlign = 'start';
   }
 
-  var SCENES = { pool: pool, food: leker, mono: laundry, chair: furniture, wood: wood, island: island, mining: mining, wave: wave, car: car };
+  var SCENES = { pool: pool, food: leker, mono: laundry, chair: furniture, wood: wood, island: island, mining: mining, wave: wave, car: car, shop: shop };
 
   /* ---------- Process rail ---------- */
   var rcur = null;
@@ -1256,7 +1300,7 @@ window.GSW_UTILS = {
         ct.focus();
       } else {
         if (st) st.textContent = '';
-        sendFlow(ct ? ct.value.trim() : '');
+        openChannels(ct ? ct.value.trim() : '');
       }
     }
   });
@@ -1265,11 +1309,17 @@ window.GSW_UTILS = {
   });
 
   /* ---------- Alur kirim: pesawat + halaman pergantian ---------- */
-  function doSend(E, fl, contact) {
+  function doSend(E, fl, contact, ch) {
     var cfg = window.GSW_CONFIG || {};
     var textObj = window.GSW_TEXT;
-    var text = 'Halo, saya ingin merancang web.\nJenis proyek: ' + (E.type ? BT[E.type] : '-') + '\nDetail tambahan: ' + (fl.length ? fl.join(', ') : '-') + '\nRingkasan: ' + (B.text || '-') + '\nKontak: ' + (contact || '-');
-    var payload = { contact: contact, type: E.type ? BT[E.type] : '', features: fl, summary: B.text || '', text: text, sentAt: new Date().toISOString() };
+    var text = 'Halo, saya ingin merancang web.\nJenis proyek: ' + (E.type ? BT[E.type] : '-') + '\nDetail tambahan: ' + (fl.length ? fl.join(', ') : '-') + '\nRingkasan: ' + (B.text || '-') + '\nNama: ' + (contact || '-');
+    var payload = { channel: ch || 'wa', contact: contact, type: E.type ? BT[E.type] : '', features: fl, summary: B.text || '', text: text, sentAt: new Date().toISOString() };
+    if (ch === 'tg' || ch === 'dc') {
+      var tu = cfg.telegramUser || 'gawns', di = cfg.discordId || '541070944752631818', cp = null;
+      try { cp = navigator.clipboard.writeText(text); } catch (x) {}
+      try { window.open(ch === 'tg' ? 'https://t.me/' + tu : 'https://discord.com/users/' + di, '_blank', 'noopener'); } catch (x) {}
+      return cp ? cp.then(function () { return ch; }, function () { return 'chat'; }) : Promise.resolve('chat');
+    }
     if (cfg.sendEndpoint) {
       try {
         return fetch(cfg.sendEndpoint, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) })
@@ -1282,12 +1332,87 @@ window.GSW_UTILS = {
     }
     try { return navigator.clipboard.writeText(text).then(function () { return 'copied'; }, function () { return 'nocfg'; }); } catch (x) { return Promise.resolve('nocfg'); }
   }
-  function sendFlow(contact) {
+  /* ---------- Pilih saluran kirim: Telegram, Discord, WhatsApp ---------- */
+  function openChannels(name) {
+    if (document.getElementById('chs')) return;
+    var cfg = window.GSW_CONFIG || {}, prev = document.activeElement, ov, i;
+    if (!document.getElementById('chs-css')) {
+      var cs = document.createElement('style'); cs.id = 'chs-css';
+      cs.textContent = `#chs{position:fixed;inset:0;z-index:210;display:flex;align-items:flex-end;justify-content:center;background:rgba(11,31,75,.38);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);opacity:0;transition:opacity .3s var(--ease)}
+#chs.on{opacity:1}
+#chs .cs-box{width:100%;max-width:440px;max-height:92%;overflow:auto;background:var(--bg);color:var(--fg);border:1px solid var(--line);border-radius:24px 24px 0 0;padding:22px 20px calc(20px + env(safe-area-inset-bottom,0px));box-shadow:var(--shadow);transform:translateY(28px);transition:transform .45s var(--ease)}
+#chs.on .cs-box{transform:none}
+#chs .cs-h{display:flex;align-items:center;justify-content:space-between;gap:12px}
+#chs .cs-t{margin:0;font-family:var(--disp);font-weight:600;font-size:26px;line-height:1.1;letter-spacing:-.02em}
+#chs .cs-x{flex:none;width:44px;height:44px;margin:-8px -10px -8px 0;display:grid;place-items:center;border:0;border-radius:50%;background:transparent;color:var(--muted);cursor:pointer}
+#chs .cs-x:hover{background:var(--hover);color:var(--fg)}
+#chs .cs-s{margin:6px 0 14px;font-size:14px;line-height:1.5;color:var(--muted)}
+#chs .cs-o{display:flex;align-items:center;gap:14px;width:100%;min-height:68px;margin-top:10px;padding:12px 16px 12px 12px;border:1px solid var(--line);border-radius:16px;background:var(--field);color:var(--fg);font:inherit;text-align:left;cursor:pointer;transition:border-color .3s var(--ease),transform .3s var(--ease)}
+#chs .cs-o:hover{border-color:var(--accent)}
+#chs .cs-o:active{transform:scale(.99)}
+#chs .cs-i{flex:none;width:44px;height:44px;display:grid;place-items:center;border-radius:12px;background:var(--bg);border:1px solid var(--line)}
+#chs .cs-i svg{width:22px;height:22px}
+#chs .cs-m{flex:1;min-width:0}
+#chs .cs-n{display:block;font-size:16px;font-weight:600;line-height:1.3}
+#chs .cs-d{display:block;margin-top:2px;font-size:13px;line-height:1.4;color:var(--muted)}
+#chs .cs-a{flex:none;color:var(--muted);font-size:18px}
+@media(min-width:560px){#chs{align-items:center;padding:24px}#chs .cs-box{border-radius:24px;padding-bottom:22px}}
+@media(prefers-reduced-motion:reduce){#chs,#chs .cs-box,#chs .cs-o{transition:none}}`;
+      document.head.appendChild(cs);
+    }
+    var ICON = {
+      tg: `<svg viewBox="0 0 24 24" fill="#229ED9" aria-hidden="true"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>`,
+      dc: `<svg viewBox="0 0 24 24" fill="#5865F2" aria-hidden="true"><path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z"/></svg>`,
+      wa: `<svg viewBox="0 0 24 24" fill="#25D366" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>`
+    };
+    var OPT = [
+      ['tg', 'Telegram', '@' + (cfg.telegramUser || 'gawns') + ' · pesan disalin, tinggal tempel'],
+      ['dc', 'Discord', '@' + (cfg.discordUser || 'gawns') + ' · pesan disalin, tinggal tempel'],
+      ['wa', 'WhatsApp', 'Pesan langsung terisi']
+    ];
+    ov = document.createElement('div'); ov.id = 'chs';
+    ov.setAttribute('role', 'dialog'); ov.setAttribute('aria-modal', 'true'); ov.setAttribute('aria-labelledby', 'chs-t');
+    ov.innerHTML = `<div class="cs-box"><div class="cs-h"><h2 class="cs-t" id="chs-t">Kirim lewat mana?</h2><button type="button" class="cs-x" aria-label="Tutup"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div><p class="cs-s"></p><div class="cs-l"></div></div>`;
+    ov.querySelector('.cs-s').textContent = 'Halo, ' + name + '. Pilih satu, pesanmu sudah disiapkan.';
+    var list = ov.querySelector('.cs-l');
+    for (i = 0; i < OPT.length; i++) {
+      var b = document.createElement('button'); b.type = 'button'; b.className = 'cs-o'; b.setAttribute('data-ch', OPT[i][0]);
+      b.innerHTML = '<span class="cs-i">' + ICON[OPT[i][0]] + '</span><span class="cs-m"><span class="cs-n"></span><span class="cs-d"></span></span><span class="cs-a" aria-hidden="true">→</span>';
+      b.querySelector('.cs-n').textContent = OPT[i][1]; b.querySelector('.cs-d').textContent = OPT[i][2];
+      list.appendChild(b);
+    }
+    function onKey(e) {
+      if (e.key === 'Escape') { close(true); return; }
+      if (e.key !== 'Tab') return;
+      var f = ov.querySelectorAll('button'), first = f[0], last = f[f.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    }
+    function close(back) {
+      document.removeEventListener('keydown', onKey);
+      document.body.style.overflow = '';
+      if (ov.parentNode) ov.parentNode.removeChild(ov);
+      if (back && prev && prev.focus) prev.focus();
+    }
+    ov.addEventListener('click', function (e) {
+      if (e.target === ov || (e.target.closest && e.target.closest('.cs-x'))) { close(true); return; }
+      var o = e.target.closest ? e.target.closest('[data-ch]') : null;
+      if (!o) return;
+      var ch = o.getAttribute('data-ch');
+      close(false);
+      sendFlow(name, ch);
+    });
+    document.addEventListener('keydown', onKey);
+    document.body.appendChild(ov); document.body.style.overflow = 'hidden';
+    requestAnimationFrame(function () { ov.classList.add('on'); var f = ov.querySelector('.cs-o'); if (f) f.focus(); });
+  }
+
+  function sendFlow(contact, ch) {
     if (document.getElementById('sendov')) return;
     var E = beff(), fl = [], k, rm = false, ov, box, i = 0, body = document.body, PL, steps;
     try { rm = matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (x) {}
     for (k in BF) if (E.f[k]) fl.push(BF[k]);
-    var res = doSend(E, fl, contact || ''), fin = '';
+    var CN = ({ tg: 'Telegram', dc: 'Discord', wa: 'WhatsApp' })[ch] || 'WhatsApp', res = doSend(E, fl, contact || '', ch || 'wa'), fin = '';
     var textObj = window.GSW_TEXT;
     if (!document.getElementById('sendov-css')) {
       var cs = document.createElement('style'); cs.id = 'sendov-css';
@@ -1330,9 +1455,9 @@ window.GSW_UTILS = {
     // Use config values for send flow steps and messages
     var durations = window.GSW_SETTINGS.sendStepDurations || [1000, 3200, 1000];
     steps = [
-      [durations[0], textObj.sendStatusSending],
+      [durations[0], 'Menyiapkan pesan ' + CN],
       [durations[1], textObj.sendStatusReceived, 1],
-      [durations[2], textObj.sendStatusDelivering]
+      [durations[2], 'Membuka ' + CN]
     ];
     steps.push(null);
     function done() {
@@ -1646,5 +1771,131 @@ window.GSW_UTILS = {
     };
     window.addEventListener('scroll', function () { if (!tick) { tick = true; requestAnimationFrame(upd); } }, { passive: true });
     upd();
+  }
+})();
+
+/* Tema + bahasa (ID/EN). Terjemahan memakai kamus teks, dipasang ulang otomatis untuk teks dinamis. */
+(function () {
+  var root = document.documentElement, lang = 'id', orig = new WeakMap(), oa = new WeakMap(), ATTR = ['placeholder', 'aria-label', 'data-text', 'title'], mo;
+  var D = {
+    'Lewati ke konten utama': 'Skip to main content', 'G. Software Web, ke atas': 'G. Software Web, back to top', 'Navigasi utama': 'Main navigation', 'Buka menu navigasi': 'Open navigation menu', 'Menu navigasi': 'Navigation menu', 'Tutup menu navigasi': 'Close navigation menu', 'Navigasi mobile': 'Mobile navigation', 'Profil pengembang': 'Developer profiles', 'Bahasa': 'Language', 'Tutup': 'Close',
+    'Aktifkan tema gelap': 'Switch to dark theme', 'Aktifkan tema terang': 'Switch to light theme',
+    'Tentang': 'About', 'Karya': 'Work', 'Alur': 'Process', 'Penawaran': 'Quote', 'Minta penawaran': 'Request a quote', 'Lihat karya': 'See our work', 'Lewati ke penawaran': 'Skip to quote',
+    'Web dan software yang dibangun rapi, tanpa drama.': 'Web and software built cleanly, no drama.',
+    'Tentang: cara website ini berjalan.': 'About: how this website works.',
+    'Halaman': 'Page', 'Permintaan': 'Request',
+    'Seluruh situs dimuat sekali di browser. Berpindah bagian hanya menggulir, tanpa memuat ulang.': 'The whole site loads once in the browser. Moving between sections just scrolls, with no reload.',
+    'Klip karya tidak memakai gambar atau video. Semuanya digambar di browser lewat canvas dan bergerak mengikuti gulir.': 'Work clips use no images or video. Everything is drawn in the browser with canvas and moves as you scroll.',
+    'Jenis proyek, detail tambahan, dan ringkasan yang kamu tulis diubah jadi gambaran awal rancangan secara langsung.': 'The project type, extra details, and summary you write become a first draft of the design, live.',
+    'Pilih Telegram, Discord, atau WhatsApp. Pesan yang sudah disiapkan tinggal dikirim.': 'Pick Telegram, Discord, or WhatsApp. The prepared message is ready to send.',
+    'Karya dan gerakan yang sudah dibuat.': 'Work and motion we have built.',
+    'Alurnya pendek dan bisa kamu pantau.': 'A short process you can follow.',
+    'Bangun': 'Build', 'Rilis': 'Launch',
+    'Pilih jenis proyek, fitur, dan tulis ringkasan di form bawah. Pratinjau rancangan langsung terbentuk, jadi kebutuhanmu sudah terlihat sejak awal.': 'Pick a project type and features, and write a summary in the form below. A design preview forms instantly, so your needs are visible from the start.',
+    'Ringkasan dan kontakmu dikirim. Balasan lewat Telegram, Discord, atau WhatsApp berisi cakupan kerja, harga, dan perkiraan waktu.': 'Your summary and name are sent. The reply via Telegram, Discord, or WhatsApp covers scope, price, and estimated time.',
+    'Setelah penawaran disetujui, pengerjaan dimulai. Kamu melihat hasil sementara dan memberi masukan sebelum lanjut.': 'Once the quote is approved, work begins. You see interim results and give feedback before we continue.',
+    'Situs diuji di ponsel dan desktop, diperbaiki bila ada yang janggal, lalu dipublikasikan.': 'The site is tested on phone and desktop, fixed if anything looks off, then published.',
+    'Bagaimana penawaran ditentukan': 'How the quote is determined',
+    'Jenis proyek': 'Project type', 'Jumlah halaman': 'Number of pages', 'Fitur tambahan': 'Extra features', 'Tampilan': 'Appearance',
+    'Menentukan kerangka dan jumlah halaman dasar, misalnya landing page 1 halaman, toko online 6 halaman.': 'Sets the base structure and page count, e.g. a 1-page landing page or a 6-page online store.',
+    'Dibaca dari ringkasanmu, misalnya “5 halaman”. Halaman tambahan berarti pekerjaan tambahan.': 'Read from your summary, e.g. “5 pages”. Extra pages mean extra work.',
+    'Pembayaran, login, pencarian, dua bahasa, dan sejenisnya. Makin banyak dan kompleks, makin besar cakupannya.': 'Payments, login, search, two languages, and the like. The more and the more complex, the larger the scope.',
+    'Mode gelap dan animasi ikut masuk rancangan, jadi ikut dibahas di penawaran.': 'Dark mode and animation are part of the design, so they are covered in the quote.',
+    'Rancang dulu, hitung kemudian.': 'Design first, price later.',
+    'Atur': 'Configure', 'Pratinjau': 'Preview', 'Ringkasan kebutuhan': 'Project summary', 'Ide lain': 'Another idea', 'Detail tambahan': 'Extra details',
+    'Contoh: portofolio fotografer, 5 halaman, ada galeri dan form kontak, tampilan gelap.': 'Example: photographer portfolio, 5 pages, gallery and contact form, dark look.',
+    'Nama kamu': 'Your name', 'Tulis namamu': 'Type your name',
+    'Portofolio': 'Portfolio', 'Toko online': 'Online store', 'Blog / berita': 'Blog / news', 'Undangan digital': 'Digital invitation', 'Dashboard / sistem': 'Dashboard / system',
+    'Form kontak': 'Contact form', 'Pembayaran': 'Payments', 'Login pengguna': 'User login', 'Pencarian': 'Search', 'Dua bahasa': 'Two languages', 'Chat WhatsApp': 'WhatsApp chat', 'Galeri': 'Gallery', 'Testimoni': 'Testimonials', 'Harga / paket': 'Pricing / plans', 'Peta lokasi': 'Location map', 'Mode gelap': 'Dark mode', 'Animasi': 'Animations',
+    'Kirim lewat mana?': 'Send via?', 'Pesan langsung terisi': 'Message pre-filled',
+    'Tulis namamu dulu.': 'Please type your name first.', 'Nama minimal 2 huruf.': 'Name must be at least 2 characters.',
+    'Menerima Ide': 'Receiving your idea', 'Terkirim, Terima Kasih': 'Sent, thank you', 'Tidak ada': 'None',
+    'Pesan sudah siap di WhatsApp. Tekan kirim di sana.': 'Your message is ready in WhatsApp. Press send there.',
+    'Pesan sudah disalin. Tempel dan kirim di chat Telegram.': 'Message copied. Paste and send it in the Telegram chat.',
+    'Pesan sudah disalin. Tempel dan kirim di DM Discord.': 'Message copied. Paste and send it in the Discord DM.',
+    'Chat sudah dibuka. Tulis pesanmu di sana.': 'Chat opened. Write your message there.',
+    'Belum terkirim. Coba lagi sebentar.': 'Not sent. Please try again shortly.', 'Belum terkirim. Periksa koneksi lalu coba lagi.': 'Not sent. Check your connection and try again.',
+    'Pengiriman belum tersambung ke penerima.': 'Sending is not connected to a recipient yet.', 'Belum tersambung. Ringkasan disalin.': 'Not connected. Summary copied.', 'Belum tersambung ke penerima.': 'Not connected to a recipient yet.'
+  };
+  var P = [
+    [/^Halo, (.+)\. Pilih satu, pesanmu sudah disiapkan\.$/, 'Hi, $1. Pick one, your message is ready.'],
+    [/^(@\w+) · pesan disalin, tinggal tempel$/, '$1 · message copied, just paste'],
+    [/^Menyiapkan pesan (.+)$/, 'Preparing your $1 message'], [/^Membuka (.+)$/, 'Opening $1'], [/^Proyek (.+)$/, 'Project $1']
+  ];
+  function tr(s) {
+    var k = s.trim(), v, i;
+    if (!k) return null;
+    v = D.hasOwnProperty(k) ? D[k] : null;
+    if (!v) for (i = 0; i < P.length; i++) if (P[i][0].test(k)) { v = k.replace(P[i][0], P[i][1]); break; }
+    return v ? s.replace(k, function () { return v; }) : null;
+  }
+  function tn(n) { var v = tr(n.nodeValue); if (v !== null && v !== n.nodeValue) { orig.set(n, n.nodeValue); n.nodeValue = v; } }
+  function te(e) {
+    ATTR.forEach(function (a) {
+      var s = e.getAttribute && e.getAttribute(a), v;
+      if (s && (v = tr(s)) !== null && v !== s) { var o = oa.get(e) || {}; o[a] = s; oa.set(e, o); e.setAttribute(a, v); }
+    });
+  }
+  function walk(r) {
+    if (r.nodeType === 3) { tn(r); return; }
+    if (r.nodeType !== 1) return;
+    te(r);
+    var w = document.createTreeWalker(r, 5), n, p;
+    while ((n = w.nextNode())) {
+      if (n.nodeType === 3) { p = n.parentNode && n.parentNode.nodeName; if (p !== 'SCRIPT' && p !== 'STYLE') tn(n); } else te(n);
+    }
+  }
+  function restore() {
+    var w = document.createTreeWalker(document.body, 5), n, o, a;
+    while ((n = w.nextNode())) {
+      if (n.nodeType === 3) { if (orig.has(n)) { n.nodeValue = orig.get(n); orig.delete(n); } }
+      else if ((o = oa.get(n))) { for (a in o) n.setAttribute(a, o[a]); oa.delete(n); }
+    }
+  }
+  mo = new MutationObserver(function (ms) {
+    ms.forEach(function (m) {
+      if (m.type === 'childList') m.addedNodes.forEach(walk);
+      else if (m.type === 'characterData') tn(m.target);
+      else te(m.target);
+    });
+  });
+  function setLang(l) {
+    lang = l; root.lang = l; mo.disconnect();
+    if (l === 'en') { walk(document.body); mo.observe(document.body, { childList: true, subtree: true, characterData: true, attributes: true, attributeFilter: ATTR }); } else restore();
+    document.querySelectorAll('.lang-sw [data-lang]').forEach(function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-lang') === l ? 'true' : 'false'); });
+    var sg = document.querySelector('.lang-sw .seg'); if (sg) sg.setAttribute('data-pos', l);
+  }
+  function syncTheme(t) {
+    var m = document.querySelector('meta[name="theme-color"]');
+    if (m) m.setAttribute('content', t === 'dark' ? '#0A1226' : '#F4F8FF');
+    document.querySelectorAll('[data-theme-toggle]').forEach(function (b) { b.setAttribute('aria-label', t === 'dark' ? 'Aktifkan tema terang' : 'Aktifkan tema gelap'); });
+  }
+  document.addEventListener('click', function (e) {
+    var t = e.target.closest ? e.target.closest('[data-theme-toggle],[data-lang]') : null, g, n;
+    if (!t) return;
+    if (t.hasAttribute('data-theme-toggle')) {
+      n = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      root.classList.add('theme-anim'); root.setAttribute('data-theme', n);
+      clearTimeout(window.__ta); window.__ta = setTimeout(function () { root.classList.remove('theme-anim'); }, 550);
+      try { localStorage.setItem('gsw-theme', n); } catch (x) {}
+      syncTheme(n); return;
+    }
+    g = document.getElementById('langgate'); n = t.getAttribute('data-lang');
+    var pg = document.querySelector('[data-document-role="page"]'), a1;
+    if (!(g && g.contains(t)) && pg && pg.animate && n !== lang && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      document.querySelectorAll('.lang-sw [data-lang]').forEach(function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-lang') === n ? 'true' : 'false'); });
+      var sg0 = document.querySelector('.lang-sw .seg'); if (sg0) sg0.setAttribute('data-pos', n);
+      a1 = pg.animate([{ opacity: 1 }, { opacity: .2 }], { duration: 150, easing: 'ease-out', fill: 'forwards' });
+      a1.onfinish = function () { setLang(n); a1.cancel(); pg.animate([{ opacity: .2 }, { opacity: 1 }], { duration: 300, easing: 'cubic-bezier(.22,1,.36,1)' }); };
+      return;
+    }
+    setLang(n);
+    if (g && g.contains(t)) { if (pg && pg.animate && !matchMedia('(prefers-reduced-motion: reduce)').matches) pg.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 900, delay: 150, easing: 'cubic-bezier(.22,1,.36,1)', fill: 'backwards' }); g.classList.add('out'); document.body.style.overflow = ''; setTimeout(function () { if (g.parentNode) g.parentNode.removeChild(g); }, 850); }
+  });
+  syncTheme(root.getAttribute('data-theme') || 'light');
+  var gate = document.getElementById('langgate');
+  if (gate) {
+    document.body.style.overflow = 'hidden'; var f = gate.querySelector('button'); if (f) f.focus();
+    gate.addEventListener('pointermove', function (e) { gate.style.setProperty('--mx', ((e.clientX / innerWidth - .5) * 2).toFixed(3)); gate.style.setProperty('--my', ((e.clientY / innerHeight - .5) * 2).toFixed(3)); });
   }
 })();
